@@ -73,6 +73,54 @@ GATEWAY_ADMIN_PORT=19999 \
 - `-admin-host` 仅在非空时覆盖配置；`-admin-port` 仅在 `>0` 时覆盖配置。
 
 
+## local-agent 启动与使用
+
+`local-agent` 用于部署在文件所在机器（如 B 机），供网关（如 A 机的 `emby-gateway`）同步本地目录配置并提供文件流式访问。
+
+### 启动
+
+你给的命令可以直接用：
+
+```bash
+./local-agent-linux-amd64 --port 19090 --sync-token test123
+```
+
+说明：
+- `--host` 默认 `0.0.0.0`（未传时自动使用）
+- `--port` 必填（或用 `LOCAL_AGENT_PORT`）
+- `--sync-token` 必填（或用 `LOCAL_AGENT_SYNC_TOKEN`）
+- `--cors-allow-origins` 默认 `*`，支持逗号分隔多个来源
+
+等价环境变量启动示例：
+
+```bash
+LOCAL_AGENT_PORT=19090 \
+LOCAL_AGENT_SYNC_TOKEN=test123 \
+./local-agent-linux-amd64
+```
+
+可用环境变量：
+- `LOCAL_AGENT_HOST`
+- `LOCAL_AGENT_PORT`
+- `LOCAL_AGENT_SYNC_TOKEN`
+- `LOCAL_AGENT_CORS_ALLOW_ORIGINS`（如 `https://a.example.com,https://emby.example.com`）
+
+### 在 go-gateway 中如何接入
+
+在后端里新增一个 `type=local_agent`，并配置以下字段（缺一不可）：
+- `base_dir`：B 机本地目录（例如 `/mnt/media`）
+- `public_base_url`：对客户端可访问的 agent 地址（例如 `https://b.example.com`）
+- `agent_api_url`：A 机访问 agent 内部接口的地址（例如 `http://10.0.0.2:19090`）
+- `sign_secret`：签名密钥（A/B 两端一致）
+- `sync_token`：同步鉴权 token（需与 agent 启动时一致）
+- `link_ttl_seconds`：可选，直链有效期（秒）
+
+### 使用流程（简版）
+
+1. 启动 `local-agent`（B 机）。
+2. 在 `go-gateway` 配置 `local_agent` 后端（A 机）并保存。
+3. `go-gateway` 会在启动时和后续周期性（约 45 秒）向 agent 的 `/internal/sync` 同步后端配置。
+4. 客户端访问时，网关会下发 `public_base_url/stream/local/{token}` 的临时直链，由 agent 实际回源本地文件。
 
 
 
