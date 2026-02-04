@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg-emby-gateway
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gatewayuser  # 数据库用户名
+      POSTGRES_PASSWORD: password # 数据库密码
+      POSTGRES_DB: gateway
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U gatewayuser -d gateway"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  emby-gateway:
+    image: renzhengfei/emby-gateway:latest
+    container_name: emby-gateway
+    restart: unless-stopped
+
+    # 使用 host 网络，直接连本机 5432, 新增emby source后不需要端口映射
+    network_mode: host  
+
+    # 如果不使用 host 网络，可以使用下面的端口映射, 注意新增 emby source 后需要映射端口
+    # ports:
+    #   - "19999:19999"
+    #   - "127.0.0.1:18889:18889"
+    #   - "18899:18899"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    volumes:
+      - ./gateway-data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      TZ: Asia/Shanghai
+
+      # ===== Admin Server ===== 管理后台监听地址和端口
+      GATEWAY_ADMIN_HOST: 0.0.0.0
+      GATEWAY_ADMIN_PORT: 19999   
+
+      # ===== Database =====
+      GATEWAY_DB_DRIVER: postgres
+      GATEWAY_DB_DSN: postgresql://gatewayuser:password@127.0.0.1:5432/gateway?sslmode=disable  # 数据库连接字符串(用户名/密码/地址/端口/数据库名)

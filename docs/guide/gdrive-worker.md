@@ -53,23 +53,3 @@ Worker 侧需要和网关保持一致的关键项：
 1. 开启 GDrive Worker 模式后发起播放
 2. 在后台观察到请求已走 Worker 相关链路
 3. 播放可连续进行，无频繁中断
-
-## 6. 常见问题
-
-### 开启后仍走旧链路
-
-- 检查 GDrive 后端里是否真的打开了“启用 Worker 代理”
-
-### 偶发无法播放
-
-- 优先检查 Sign Key / Sync Token 两端是否一致
-- 再检查 Worker 的外网连通性与缓存配置
-
-### 多个 GDrive 后端是否能共用
-
-- 可以，共用同一 Worker 是常见做法
-
-## 7. 截图补充位（后续可直接替换）
-
-- GDrive Worker 设置页：`docs/assets/images/03-backend-config.png`
-- 播放成功统计页：`docs/assets/images/06-redirect-stats.png`

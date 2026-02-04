@@ -7,7 +7,7 @@ declare const process: {
   };
 };
 
-const repository = process.env.GITHUB_REPOSITORY || "your-org/emby-gateway-doc";
+const repository = process.env.GITHUB_REPOSITORY || "SingleJohn/emby-gateway-bin";
 const repoUrl = `https://github.com/${repository}`;
 const defaultBase = repository.endsWith(".github.io")
   ? "/"
@@ -16,12 +16,15 @@ const defaultBase = repository.endsWith(".github.io")
 export default {
   lang: "zh-CN",
   base: process.env.DOCS_BASE || (process.env.CI ? defaultBase : "/"),
-  title: "emby-gateway 文档",
+  title: "EMBY-GATEWAY 文档",
   description: "emby-gateway 公开文档站",
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
-    siteTitle: "emby-gateway 文档",
+    siteTitle: "EMBY-GATEWAY 文档",
+    search: {
+      provider: 'local'
+    },
     nav: [
       { text: "首页", link: "/" },
       { text: "功能总览", link: "/guide/features-overview" },
@@ -38,17 +41,16 @@ export default {
             { text: "项目架构", link: "/guide/architecture" },
             { text: "快速开始", link: "/guide/quick-start" },
             { text: "部署指南", link: "/guide/deployment" },
-            { text: "系统页面截图规划", link: "/guide/ui-screenshot-plan" }
+            { text: "页面截图", link: "/guide/ui-screenshot-plan" }
           ]
         },
         {
           text: "配置指南",
           items: [
-            { text: "管理界面使用", link: "/guide/management-ui" },
+            { text: "管理界面", link: "/guide/management-ui" },
+            { text: "基础配置", link: "/guide/basic-configuration" },
             { text: "后端配置", link: "/guide/backend-configuration" },
             { text: "路由规则和资源池", link: "/guide/routing-and-pool" },
-            { text: "基础配置", link: "/guide/basic-configuration" },
-            { text: "高级配置", link: "/guide/advanced-configuration" }
           ]
         },
         {

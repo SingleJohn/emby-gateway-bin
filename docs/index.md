@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: "EMBY-GATEWAY"
-  text: "稳定、可控的 Emby 网关"
-  tagline: "聚焦路由分流、高可用、安全防护与告警通知，让播放链路更稳。"
+  text: "Emby 网关"
+  tagline: "稳定可靠、聚焦路由分流、高可用、安全防护与告警通知，让播放链路更稳"
   actions:
     - theme: brand
       text: 快速开始
@@ -33,18 +33,11 @@ features:
 
 ## 适用场景
 
-- 家庭或小团队部署，快速搭建稳定播放链路
+- 多emby部署，统一出口、快速搭建稳定播放链路
 - 多后端混合存储，需要统一路由与主备容灾
+- 需要降低服务器压力，实现302跳转
 - 对账号共享、异常请求、失败率波动有安全监控需求
 - 希望通过可观测数据和告警通知提升运维效率
 
-## 推荐阅读路径
 
-1. [快速开始](/guide/quick-start)
-2. [项目架构](/guide/architecture)
-3. [后端配置](/guide/backend-configuration)
-4. [路由规则和资源池](/guide/routing-and-pool)
-5. [安全功能](/guide/security)
-6. [安全告警](/guide/security-alerts)
-7. [故障排查](/ops/troubleshooting)
-8. [系统页面截图规划](/guide/ui-screenshot-plan)
+
