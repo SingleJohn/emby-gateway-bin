@@ -1,3 +1,12 @@
+// 类型定义
+declare const process: {
+  env: {
+    GITHUB_REPOSITORY?: string;
+    DOCS_BASE?: string;
+    CI?: string;
+  };
+};
+
 const repository = process.env.GITHUB_REPOSITORY || "your-org/emby-gateway-doc";
 const repoUrl = `https://github.com/${repository}`;
 const defaultBase = repository.endsWith(".github.io")
@@ -14,22 +23,47 @@ export default {
   themeConfig: {
     siteTitle: "emby-gateway 文档",
     nav: [
+      { text: "首页", link: "/" },
       { text: "功能总览", link: "/guide/features-overview" },
       { text: "快速开始", link: "/guide/quick-start" },
-      { text: "配置参考", link: "/reference/configuration" },
+      { text: "部署指南", link: "/guide/deployment" },
       { text: "故障排查", link: "/ops/troubleshooting" }
     ],
     sidebar: {
       "/guide/": [
         {
-          text: "使用指南",
+          text: "入门指南",
           items: [
             { text: "功能总览", link: "/guide/features-overview" },
+            { text: "项目架构", link: "/guide/architecture" },
             { text: "快速开始", link: "/guide/quick-start" },
             { text: "部署指南", link: "/guide/deployment" },
-            { text: "一步步配置指南", link: "/guide/basic-configuration" },
-            { text: "GDrive Worker 指南", link: "/guide/gdrive-worker" },
-            { text: "术语速查", link: "/guide/glossary" }
+            { text: "系统页面截图规划", link: "/guide/ui-screenshot-plan" }
+          ]
+        },
+        {
+          text: "配置指南",
+          items: [
+            { text: "管理界面使用", link: "/guide/management-ui" },
+            { text: "后端配置", link: "/guide/backend-configuration" },
+            { text: "路由规则和资源池", link: "/guide/routing-and-pool" },
+            { text: "基础配置", link: "/guide/basic-configuration" },
+            { text: "高级配置", link: "/guide/advanced-configuration" }
+          ]
+        },
+        {
+          text: "安全与监控",
+          items: [
+            { text: "安全功能", link: "/guide/security" },
+            { text: "安全告警", link: "/guide/security-alerts" },
+            { text: "通知系统", link: "/guide/notification" }
+          ]
+        },
+        {
+          text: "其他功能",
+          items: [
+            { text: "GDrive Worker", link: "/guide/gdrive-worker" },
+            { text: "激活与许可证", link: "/guide/license" }
           ]
         }
       ],
@@ -37,17 +71,17 @@ export default {
         {
           text: "参考文档",
           items: [
-            { text: "配置说明", link: "/reference/configuration" },
-            { text: "路由与故障切换", link: "/reference/routing-and-failover" }
+            { text: "路由与故障切换", link: "/reference/routing-and-failover" },
+            { text: "术语速查", link: "/guide/glossary" }
           ]
         }
       ],
       "/ops/": [
         {
-          text: "运维与排障",
+          text: "故障排查",
           items: [
-            { text: "可观测性", link: "/ops/observability" },
-            { text: "故障排查", link: "/ops/troubleshooting" }
+            { text: "排障指南", link: "/ops/troubleshooting" },
+            { text: "可观测性", link: "/ops/observability" }
           ]
         }
       ]

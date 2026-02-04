@@ -1,4 +1,4 @@
-# GDrive Worker 指南
+# GDrive Worker
 
 这篇文档说明如何开启 GDrive Worker 模式（适合需要把 GDrive 流量从网关侧卸载出去的场景）。
 

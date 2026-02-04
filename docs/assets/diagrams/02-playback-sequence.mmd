@@ -1,18 +1,26 @@
 sequenceDiagram
-    actor U as 用户
-    participant P as Emby 客户端
+    participant C as Emby 客户端
     participant S as Source 入口
     participant R as 路由与映射
     participant PO as 资源池
-    participant B as 后端服务
+    participant P as 主后端
+    participant B as 备后端
+    participant ST as 存储服务
 
-    U->>P: 点击播放
-    P->>S: 发起播放请求
-    S->>R: 匹配规则 + 路径映射
+    C->>S: 发起播放请求
+    S->>R: 匹配规则与路径映射
     R->>PO: 选择可用后端
-    PO->>B: 生成临时直链
-    B-->>PO: 返回可访问地址
-    PO-->>S: 直链结果
-    S-->>P: 返回 302 跳转
-    P->>B: 直连拉流
-
+    PO->>P: 优先请求主后端
+    alt 主后端可用
+        P->>ST: 生成临时直链
+        ST-->>P: 返回可访问地址
+        P-->>PO: 成功
+    else 主后端不可用
+        PO->>B: 切换备后端并重试
+        B->>ST: 生成临时直链
+        ST-->>B: 返回可访问地址
+        B-->>PO: 成功
+    end
+    PO-->>S: 返回可访问地址
+    S-->>C: 返回 302 / 直链
+    C->>ST: 直连拉流

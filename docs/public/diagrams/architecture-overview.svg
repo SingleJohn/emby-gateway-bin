@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760">
+  <defs>
+    <style>
+      .title { font: 700 30px "PingFang SC","Microsoft YaHei",sans-serif; fill: #0f172a; }
+      .label { font: 600 18px "PingFang SC","Microsoft YaHei",sans-serif; fill: #0f172a; }
+      .desc  { font: 500 14px "PingFang SC","Microsoft YaHei",sans-serif; fill: #334155; }
+      .box { stroke: #334155; stroke-width: 2; rx: 12; ry: 12; }
+      .line { stroke: #1e293b; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .bg { fill: #f8fafc; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1e293b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="760" class="bg"/>
+  <text x="50" y="54" class="title">Emby Gateway 架构图</text>
+
+  <rect x="46" y="90" width="1308" height="240" fill="#eef2ff" class="box"/>
+  <text x="70" y="122" class="label">请求处理链路</text>
+
+  <rect x="80" y="160" width="180" height="110" fill="#dbeafe" class="box"/>
+  <text x="116" y="208" class="label">客户端 / 播放器</text>
+  <text x="108" y="232" class="desc">发起播放请求</text>
+
+  <rect x="310" y="160" width="180" height="110" fill="#bfdbfe" class="box"/>
+  <text x="358" y="208" class="label">Source 入口</text>
+  <text x="344" y="232" class="desc">接收并解析请求</text>
+
+  <rect x="540" y="160" width="180" height="110" fill="#c7d2fe" class="box"/>
+  <text x="585" y="208" class="label">路由 + 映射</text>
+  <text x="575" y="232" class="desc">匹配规则与路径转换</text>
+
+  <rect x="770" y="160" width="180" height="110" fill="#ddd6fe" class="box"/>
+  <text x="822" y="208" class="label">资源池</text>
+  <text x="801" y="232" class="desc">主备后端选择</text>
+
+  <rect x="1000" y="130" width="160" height="90" fill="#fecdd3" class="box"/>
+  <text x="1045" y="182" class="label">主后端</text>
+
+  <rect x="1000" y="240" width="160" height="90" fill="#fed7aa" class="box"/>
+  <text x="1045" y="292" class="label">备后端</text>
+
+  <rect x="1200" y="170" width="120" height="120" fill="#bbf7d0" class="box"/>
+  <text x="1215" y="222" class="label">S3/CDN</text>
+  <text x="1223" y="246" class="desc">GDrive/本地</text>
+
+  <path d="M260 215 L310 215" class="line"/>
+  <path d="M490 215 L540 215" class="line"/>
+  <path d="M720 215 L770 215" class="line"/>
+  <path d="M950 215 L1000 175" class="line"/>
+  <path d="M950 215 L1000 285" class="line"/>
+  <path d="M1160 175 L1200 215" class="line"/>
+  <path d="M1160 285 L1200 245" class="line"/>
+
+  <rect x="46" y="360" width="1308" height="340" fill="#ecfeff" class="box"/>
+  <text x="70" y="392" class="label">控制与运维链路</text>
+
+  <rect x="110" y="440" width="220" height="110" fill="#bae6fd" class="box"/>
+  <text x="160" y="488" class="label">管理后台 UI</text>
+  <text x="144" y="512" class="desc">配置来源/后端/规则</text>
+
+  <rect x="400" y="440" width="220" height="110" fill="#a7f3d0" class="box"/>
+  <text x="453" y="488" class="label">配置存储</text>
+  <text x="434" y="512" class="desc">SQLite / PostgreSQL</text>
+
+  <rect x="690" y="440" width="220" height="110" fill="#bfdbfe" class="box"/>
+  <text x="744" y="488" class="label">配置加载</text>
+  <text x="732" y="512" class="desc">运行时热更新生效</text>
+
+  <rect x="980" y="440" width="300" height="110" fill="#fde68a" class="box"/>
+  <text x="1048" y="488" class="label">可观测与告警</text>
+  <text x="1005" y="512" class="desc">请求日志 / 统计 / 安全告警 / 通知中心</text>
+
+  <path d="M330 495 L400 495" class="line"/>
+  <path d="M620 495 L690 495" class="line"/>
+  <path d="M910 495 L980 495" class="line"/>
+
+  <path d="M800 440 L860 270" class="line"/>
+  <path d="M1080 440 L1080 332" class="line"/>
+</svg>
