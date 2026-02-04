@@ -15,6 +15,9 @@ hero:
     - theme: alt
       text: 故障排查
       link: /ops/troubleshooting
+    - theme: brand
+      text: 下载
+      link: https://github.com/SingleJohn/emby-gateway-bin/releases
 
 features:
   - title: 多后端智能分流

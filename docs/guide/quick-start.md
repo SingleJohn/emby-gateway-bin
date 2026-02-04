@@ -117,6 +117,8 @@ docker compose logs -f
 
 从项目发布页面下载适合您系统的二进制文件
 
+[github release](https://github.com/SingleJohn/emby-gateway-bin/releases)
+
 ### 步骤 2：启动服务
 
 #### SQLite 方式（快速验证）
