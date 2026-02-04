@@ -29,13 +29,22 @@ jobs:
           cache: npm
 
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build VitePress
-        run: npm run docs:build
+        run: |
+          BASE_PATH="${{ steps.pages.outputs.base_path }}"
+          if [ -z "$BASE_PATH" ] || [ "$BASE_PATH" = "/" ]; then
+            DOCS_BASE="/"
+          else
+            DOCS_BASE="${BASE_PATH%/}/"
+          fi
+          echo "Using DOCS_BASE=$DOCS_BASE"
+          DOCS_BASE="$DOCS_BASE" npm run docs:build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
