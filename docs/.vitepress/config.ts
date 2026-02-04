@@ -88,12 +88,8 @@ export default {
         }
       ]
     },
-    editLink: {
-      pattern: `${repoUrl}/edit/main/docs/:path`,
-      text: "在 GitHub 上编辑此页"
-    },
     footer: {
-      message: "文档面向公开使用场景，避免披露私有实现细节。",
+      message: "",
       copyright: "Copyright © 2026 emby-gateway"
     },
     docFooter: {
