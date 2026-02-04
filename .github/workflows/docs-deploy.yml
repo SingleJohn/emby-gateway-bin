@@ -37,8 +37,13 @@ jobs:
 
       - name: Build VitePress
         run: |
+          echo "configure-pages.base_path=${{ steps.pages.outputs.base_path }}"
+          echo "configure-pages.base_url=${{ steps.pages.outputs.base_url }}"
           BASE_PATH="${{ steps.pages.outputs.base_path }}"
-          if [ -z "$BASE_PATH" ] || [ "$BASE_PATH" = "/" ]; then
+          if [ -s docs/public/CNAME ]; then
+            DOCS_BASE="/"
+            echo "Detected docs/public/CNAME, force DOCS_BASE=/ for custom domain."
+          elif [ -z "$BASE_PATH" ] || [ "$BASE_PATH" = "/" ]; then
             DOCS_BASE="/"
           else
             DOCS_BASE="${BASE_PATH%/}/"
