@@ -1,0 +1,15 @@
+flowchart TB
+    Internet[公网用户] --> RP[反向代理/HTTPS]
+    RP --> GW[emby-gateway]
+    GW --> DB[(PostgreSQL)]
+
+    subgraph Optional[可选组件]
+        LA[Local Agent]
+        WK[GDrive Worker]
+    end
+
+    GW --> LA
+    GW --> WK
+
+    GW --> OB[(日志与统计)]
+

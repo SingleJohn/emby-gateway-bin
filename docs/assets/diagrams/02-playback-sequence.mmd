@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor U as 用户
+    participant P as Emby 客户端
+    participant S as Source 入口
+    participant R as 路由与映射
+    participant PO as 资源池
+    participant B as 后端服务
+
+    U->>P: 点击播放
+    P->>S: 发起播放请求
+    S->>R: 匹配规则 + 路径映射
+    R->>PO: 选择可用后端
+    PO->>B: 生成临时直链
+    B-->>PO: 返回可访问地址
+    PO-->>S: 直链结果
+    S-->>P: 返回 302 跳转
+    P->>B: 直连拉流
+
