@@ -52,6 +52,7 @@ export default {
     ["link", { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
     ["link", { rel: "shortcut icon", href: "/favicon.svg" }],
     ["link", { rel: "apple-touch-icon", href: "/favicon.svg" }],
+    ["meta", { name: "google-site-verification", content: "syCor37aAP06jJ1DTnTTwb4rbyVQy6CVbx9y4cL-wjY" }],
     ["meta", { name: "author", content: "emby-gateway" }],
     ["meta", { name: "robots", content: "index,follow,max-image-preview:large" }],
     ["meta", { name: "theme-color", content: "#0f7ae5" }],
