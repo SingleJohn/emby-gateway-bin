@@ -1,0 +1,12 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EMBY-GATEWAY icon">
+  <defs>
+    <linearGradient id="bg" x1="32" y1="20" x2="220" y2="236" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A7EF0"/>
+      <stop offset="1" stop-color="#31A4FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#bg)"/>
+  <rect x="46" y="52" width="164" height="152" rx="28" fill="white" fill-opacity="0.14"/>
+  <path d="M78 86H176V108H102V126H168V147H102V170H176V192H78V86Z" fill="white"/>
+  <path d="M164 86H184L148 192H128L164 86Z" fill="#DDF0FF"/>
+</svg>

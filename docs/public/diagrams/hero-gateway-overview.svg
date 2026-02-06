@@ -1,0 +1,97 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">EMBY-GATEWAY Hero Overview</title>
+  <desc id="desc">Gateway centered architecture diagram with request routing, failover, security, and observability.</desc>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="40" x2="1280" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FBFF"/>
+      <stop offset="1" stop-color="#EAF4FF"/>
+    </linearGradient>
+    <linearGradient id="gatewayCard" x1="480" y1="210" x2="920" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EEF6FF"/>
+    </linearGradient>
+    <linearGradient id="pillBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F7AE5"/>
+      <stop offset="1" stop-color="#29A2FF"/>
+    </linearGradient>
+    <filter id="shadowSoft" x="0" y="0" width="1400" height="900" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0A4D8C" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10V0Z" fill="#2B6CB0"/>
+    </marker>
+    <style>
+      .t-head { font-family: "Segoe UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-weight: 700; fill: #0C2D56; }
+      .t-main { font-family: "Segoe UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-weight: 600; fill: #123A66; }
+      .t-sub { font-family: "Segoe UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-weight: 500; fill: #35597C; }
+      .t-white { font-family: "Segoe UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; font-weight: 700; fill: #FFFFFF; }
+      .line { stroke: #2B6CB0; stroke-width: 3; marker-end: url(#arrow); }
+      .card { fill: #FFFFFF; stroke: #BED7F2; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="900" rx="36" fill="url(#bg)"/>
+
+  <text x="700" y="84" text-anchor="middle" class="t-head" font-size="48">EMBY-GATEWAY</text>
+  <text x="700" y="124" text-anchor="middle" class="t-sub" font-size="22">Request Routing • Failover • Security • Observability</text>
+
+  <g filter="url(#shadowSoft)">
+    <rect x="470" y="180" width="460" height="520" rx="30" fill="url(#gatewayCard)" stroke="#94BEE8" stroke-width="3"/>
+  </g>
+
+  <rect x="540" y="220" width="320" height="58" rx="18" fill="url(#pillBlue)"/>
+  <text x="700" y="257" text-anchor="middle" class="t-white" font-size="25">Gateway Core</text>
+
+  <rect x="525" y="305" width="350" height="70" rx="14" class="card"/>
+  <text x="700" y="336" text-anchor="middle" class="t-main" font-size="20">Route Rules + Path Mapping</text>
+  <text x="700" y="361" text-anchor="middle" class="t-sub" font-size="15">Match by path prefix and transform storage path</text>
+
+  <rect x="525" y="390" width="350" height="70" rx="14" class="card"/>
+  <text x="700" y="421" text-anchor="middle" class="t-main" font-size="20">Resource Pool + Failover</text>
+  <text x="700" y="446" text-anchor="middle" class="t-sub" font-size="15">Primary backend first, automatic switch on failure</text>
+
+  <rect x="525" y="475" width="350" height="70" rx="14" class="card"/>
+  <text x="700" y="506" text-anchor="middle" class="t-main" font-size="20">Security Engine</text>
+  <text x="700" y="531" text-anchor="middle" class="t-sub" font-size="15">IP / Path / User-Agent rules and rate limiting</text>
+
+  <rect x="525" y="560" width="350" height="70" rx="14" class="card"/>
+  <text x="700" y="591" text-anchor="middle" class="t-main" font-size="20">Logs + Metrics + Alerts</text>
+  <text x="700" y="616" text-anchor="middle" class="t-sub" font-size="15">Trace requests and send notifications to channels</text>
+
+  <rect x="140" y="330" width="230" height="220" rx="22" fill="#FFFFFF" stroke="#A9CCEE" stroke-width="3"/>
+  <text x="255" y="372" text-anchor="middle" class="t-main" font-size="24">Emby Clients</text>
+  <text x="255" y="408" text-anchor="middle" class="t-sub" font-size="17">TV / Web / Mobile</text>
+  <rect x="170" y="436" width="170" height="82" rx="12" fill="#EFF7FF" stroke="#C3DCF4" stroke-width="2"/>
+  <text x="255" y="468" text-anchor="middle" class="t-main" font-size="16">Playback Request</text>
+  <text x="255" y="492" text-anchor="middle" class="t-sub" font-size="14">/Items/.../PlaybackInfo</text>
+
+  <rect x="1020" y="230" width="240" height="94" rx="16" fill="#FFFFFF" stroke="#A9CCEE" stroke-width="3"/>
+  <text x="1140" y="268" text-anchor="middle" class="t-main" font-size="21">S3 / Object Storage</text>
+  <text x="1140" y="296" text-anchor="middle" class="t-sub" font-size="15">Cold media and archives</text>
+
+  <rect x="1020" y="340" width="240" height="94" rx="16" fill="#FFFFFF" stroke="#A9CCEE" stroke-width="3"/>
+  <text x="1140" y="378" text-anchor="middle" class="t-main" font-size="21">CDN / HTTP Origin</text>
+  <text x="1140" y="406" text-anchor="middle" class="t-sub" font-size="15">High-frequency hot content</text>
+
+  <rect x="1020" y="450" width="240" height="94" rx="16" fill="#FFFFFF" stroke="#A9CCEE" stroke-width="3"/>
+  <text x="1140" y="488" text-anchor="middle" class="t-main" font-size="21">GDrive / 123 / Local</text>
+  <text x="1140" y="516" text-anchor="middle" class="t-sub" font-size="15">Mixed multi-backend storage</text>
+
+  <rect x="1020" y="590" width="240" height="110" rx="18" fill="#F1FAF4" stroke="#9ED7AF" stroke-width="3"/>
+  <text x="1140" y="633" text-anchor="middle" class="t-main" font-size="22">Alert Channels</text>
+  <text x="1140" y="665" text-anchor="middle" class="t-sub" font-size="15">WeCom · DingTalk · TG · Bark</text>
+
+  <path d="M370 440C410 440 425 438 470 438" class="line"/>
+  <path d="M930 280C972 280 980 278 1018 278" class="line"/>
+  <path d="M930 375C972 375 980 372 1018 372" class="line"/>
+  <path d="M930 485C972 485 980 482 1018 482" class="line"/>
+  <path d="M820 614C885 614 920 614 1018 642" class="line"/>
+
+  <path d="M1160 452C1220 452 1240 492 1210 540" stroke="#2B6CB0" stroke-width="3" stroke-dasharray="7 8" fill="none" marker-end="url(#arrow)"/>
+  <text x="1222" y="510" text-anchor="start" class="t-sub" font-size="14">Failover</text>
+
+  <rect x="140" y="676" width="790" height="86" rx="18" fill="#FFFFFF" stroke="#B8D4EF" stroke-width="2"/>
+  <text x="170" y="712" class="t-main" font-size="18">Flow:</text>
+  <text x="240" y="712" class="t-sub" font-size="18">Client request → route match → pool selection → backend response → logging &amp; alerting</text>
+  <text x="170" y="740" class="t-sub" font-size="15">Supports direct links, STRM, and centralized management UI configuration.</text>
+</svg>

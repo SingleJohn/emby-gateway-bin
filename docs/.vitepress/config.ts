@@ -3,25 +3,81 @@ declare const process: {
   env: {
     GITHUB_REPOSITORY?: string;
     DOCS_BASE?: string;
+    DOCS_SITE_URL?: string;
     CI?: string;
   };
 };
 
 const repository = process.env.GITHUB_REPOSITORY || "SingleJohn/emby-gateway-bin";
 const repoUrl = `https://github.com/${repository}`;
+const siteUrl = (process.env.DOCS_SITE_URL || "https://gateway-doc.henhendeaini.com").replace(/\/+$/, "");
+const siteName = "EMBY-GATEWAY 文档";
+const siteDescription = "Emby 网关文档：多后端分流、主备切换、安全防护、日志统计与告警通知。";
+const ogImage = `${siteUrl}/diagrams/hero-gateway-overview.svg`;
+const websiteJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  description: siteDescription,
+  url: siteUrl,
+  inLanguage: "zh-CN",
+  publisher: {
+    "@type": "Organization",
+    name: "emby-gateway"
+  }
+});
 const defaultBase = repository.endsWith(".github.io")
   ? "/"
   : `/${repository.split("/")[1] || "emby-gateway-doc"}/`;
 
+function toCanonicalUrl(relativePath: string) {
+  const clean = relativePath.replace(/\\/g, "/");
+  if (clean === "index.md") return `${siteUrl}/`;
+  if (clean.endsWith("/index.md")) return `${siteUrl}/${clean.slice(0, -9)}/`;
+  if (clean.endsWith(".md")) return `${siteUrl}/${clean.slice(0, -3)}`;
+  return `${siteUrl}/${clean}`;
+}
+
 export default {
   lang: "zh-CN",
   base: process.env.DOCS_BASE || (process.env.CI ? defaultBase : "/"),
-  title: "EMBY-GATEWAY 文档",
-  description: "emby-gateway 公开文档站",
+  title: siteName,
+  description: siteDescription,
   cleanUrls: true,
   lastUpdated: true,
+  sitemap: {
+    hostname: siteUrl
+  },
+  head: [
+    ["link", { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" }],
+    ["link", { rel: "shortcut icon", href: "/favicon.svg" }],
+    ["link", { rel: "apple-touch-icon", href: "/favicon.svg" }],
+    ["meta", { name: "author", content: "emby-gateway" }],
+    ["meta", { name: "robots", content: "index,follow,max-image-preview:large" }],
+    ["meta", { name: "theme-color", content: "#0f7ae5" }],
+    ["meta", { name: "keywords", content: "Emby,Emby Gateway,媒体网关,多后端分流,高可用,故障切换,安全规则,STRM 生成,STRM 文件,S3,CDN,GDrive,Google Drive,123 网盘,本地存储,对象存储,路径映射,资源池" }],
+    ["meta", { property: "og:site_name", content: siteName }],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:title", content: siteName }],
+    ["meta", { property: "og:description", content: siteDescription }],
+    ["meta", { property: "og:image", content: ogImage }],
+    ["meta", { property: "og:locale", content: "zh_CN" }],
+    ["meta", { name: "twitter:card", content: "summary_large_image" }],
+    ["meta", { name: "twitter:title", content: siteName }],
+    ["meta", { name: "twitter:description", content: siteDescription }],
+    ["meta", { name: "twitter:image", content: ogImage }],
+    ["script", { type: "application/ld+json" }, websiteJsonLd]
+  ],
+  transformHead({ pageData }) {
+    const canonical = toCanonicalUrl(pageData.relativePath);
+    return [
+      ["link", { rel: "canonical", href: canonical }],
+      ["meta", { property: "og:url", content: canonical }]
+    ];
+  },
   themeConfig: {
-    siteTitle: "EMBY-GATEWAY 文档",
+    siteTitle: siteName,
+    logo: "/favicon.svg",
     search: {
       provider: 'local'
     },

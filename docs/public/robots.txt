@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gateway-doc.henhendeaini.com/sitemap.xml
