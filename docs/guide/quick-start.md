@@ -123,7 +123,9 @@ docker compose logs -f
 
 #### SQLite 方式（快速验证）
 
-SQLite 方式会有日志性能问题，建议在生产环境使用 PostgreSQL 方式，后续可能会移除 SQLite 支持。
+SQLite 方式会有日志性能问题，建议在生产环境使用 PostgreSQL 方式。
+
+> **❗** SQLite 未经完整测试，可能会有各种奇奇怪怪的问题，适合快速体验，不建议在生产环境使用，后续可能会移除 SQLite 支持。
 
 ```bash
 ./emby-gateway
