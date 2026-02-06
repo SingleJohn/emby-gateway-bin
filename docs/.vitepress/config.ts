@@ -11,7 +11,7 @@ declare const process: {
 const repository = process.env.GITHUB_REPOSITORY || "SingleJohn/emby-gateway-bin";
 const repoUrl = `https://github.com/${repository}`;
 const siteUrl = (process.env.DOCS_SITE_URL || "https://gateway-doc.henhendeaini.com").replace(/\/+$/, "");
-const siteName = "EMBY-GATEWAY 文档";
+const siteName = "Feiyue Emby Gateway 文档";
 const siteDescription = "Emby 网关文档：多后端分流、主备切换、安全防护、日志统计与告警通知。";
 const ogImage = `${siteUrl}/diagrams/hero-gateway-overview.svg`;
 const websiteJsonLd = JSON.stringify({
