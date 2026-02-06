@@ -51,6 +51,7 @@ export default {
             { text: "基础配置", link: "/guide/basic-configuration" },
             { text: "后端配置", link: "/guide/backend-configuration" },
             { text: "STRM 功能", link: "/guide/strm-guide" },
+            { text: "路由匹配规则", link: "/guide/route-matching-rules" },
             { text: "路由规则和资源池", link: "/guide/routing-and-pool" },
           ]
         },

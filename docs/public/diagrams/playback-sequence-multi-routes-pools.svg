@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 1200" width="2200" height="1200">
+  <defs>
+    <style>
+      .title { font: 700 34px "PingFang SC","Microsoft YaHei",sans-serif; fill: #0f172a; }
+      .actor { font: 600 16px "PingFang SC","Microsoft YaHei",sans-serif; fill: #0f172a; }
+      .note  { font: 500 14px "PingFang SC","Microsoft YaHei",sans-serif; fill: #334155; }
+      .small { font: 500 12px "PingFang SC","Microsoft YaHei",sans-serif; fill: #475569; }
+      .lifeline { stroke: #64748b; stroke-width: 2; stroke-dasharray: 8 8; }
+      .msg { stroke: #0f172a; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .ret { stroke: #334155; stroke-width: 2; fill: none; stroke-dasharray: 6 6; marker-end: url(#arrow2); }
+      .fail { stroke: #b91c1c; stroke-width: 2; fill: none; stroke-dasharray: 6 4; marker-end: url(#arrowFail); }
+      .box { stroke: #334155; stroke-width: 2; rx: 10; ry: 10; }
+      .group { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6 6; fill: #f8fafc; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#0f172a"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <marker id="arrowFail" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="2200" height="1200" fill="#f1f5f9"/>
+  <text x="40" y="56" class="title">播放请求时序图（多路由规则 + 多资源池 + 代理回退）</text>
+
+  <rect x="30" y="90" width="150" height="54" fill="#dbeafe" class="box"/>
+  <text x="48" y="123" class="actor">Emby Client</text>
+  <line x1="105" y1="144" x2="105" y2="1135" class="lifeline"/>
+
+  <rect x="220" y="90" width="180" height="54" fill="#bfdbfe" class="box"/>
+  <text x="240" y="123" class="actor">Source Server</text>
+  <line x1="310" y1="144" x2="310" y2="1135" class="lifeline"/>
+
+  <rect x="450" y="90" width="190" height="54" fill="#c7d2fe" class="box"/>
+  <text x="472" y="123" class="actor">Route Matcher</text>
+  <line x1="545" y1="144" x2="545" y2="1135" class="lifeline"/>
+
+  <rect x="690" y="90" width="130" height="54" fill="#e2e8f0" class="box"/>
+  <text x="725" y="123" class="actor">Route#1</text>
+  <line x1="755" y1="144" x2="755" y2="1135" class="lifeline"/>
+
+  <rect x="860" y="90" width="130" height="54" fill="#e2e8f0" class="box"/>
+  <text x="895" y="123" class="actor">Route#2</text>
+  <line x1="925" y1="144" x2="925" y2="1135" class="lifeline"/>
+
+  <rect x="1030" y="90" width="130" height="54" fill="#ddd6fe" class="box"/>
+  <text x="1068" y="123" class="actor">Pool A</text>
+  <line x1="1095" y1="144" x2="1095" y2="1135" class="lifeline"/>
+
+  <rect x="1200" y="90" width="130" height="54" fill="#ddd6fe" class="box"/>
+  <text x="1238" y="123" class="actor">Pool B</text>
+  <line x1="1265" y1="144" x2="1265" y2="1135" class="lifeline"/>
+
+  <rect x="1370" y="90" width="150" height="54" fill="#fecaca" class="box"/>
+  <text x="1396" y="123" class="actor">A Primary</text>
+  <line x1="1445" y1="144" x2="1445" y2="1135" class="lifeline"/>
+
+  <rect x="1560" y="90" width="150" height="54" fill="#fee2e2" class="box"/>
+  <text x="1583" y="123" class="actor">A Standby</text>
+  <line x1="1635" y1="144" x2="1635" y2="1135" class="lifeline"/>
+
+  <rect x="1750" y="90" width="150" height="54" fill="#bbf7d0" class="box"/>
+  <text x="1776" y="123" class="actor">B Primary</text>
+  <line x1="1825" y1="144" x2="1825" y2="1135" class="lifeline"/>
+
+  <rect x="1940" y="90" width="150" height="54" fill="#dcfce7" class="box"/>
+  <text x="1965" y="123" class="actor">B Standby</text>
+  <line x1="2015" y1="144" x2="2015" y2="1135" class="lifeline"/>
+
+  <rect x="2110" y="90" width="70" height="54" fill="#fde68a" class="box"/>
+  <text x="2121" y="123" class="actor">Proxy</text>
+  <line x1="2145" y1="144" x2="2145" y2="1135" class="lifeline"/>
+
+  <rect x="430" y="170" width="1700" height="470" class="group"/>
+  <text x="442" y="192" class="note">场景 A：Route#1 未匹配，Route#2 匹配，走 Pool B (Primary -> Standby)</text>
+
+  <path d="M105 220 L310 220" class="msg"/>
+  <text x="135" y="212" class="note">1) 播放请求 /Items/{id}/PlaybackInfo</text>
+
+  <path d="M310 260 L545 260" class="msg"/>
+  <text x="338" y="252" class="note">2) tryResolvePlaybackRoute</text>
+
+  <path d="M545 300 L755 300" class="msg"/>
+  <text x="583" y="292" class="note">3) 按 priority 检查 Route#1</text>
+  <path d="M755 330 L545 330" class="ret"/>
+  <text x="592" y="322" class="note">未匹配</text>
+
+  <path d="M545 370 L925 370" class="msg"/>
+  <text x="684" y="362" class="note">4) 继续检查 Route#2</text>
+  <path d="M925 400 L545 400" class="ret"/>
+  <text x="683" y="392" class="note">匹配成功（选中 Route#2，停止继续选路）</text>
+
+  <path d="M545 440 L1265 440" class="msg"/>
+  <text x="855" y="432" class="note">5) Route#2 绑定 Pool B，开始生成直链</text>
+
+  <path d="M1265 480 L1825 480" class="msg"/>
+  <text x="1450" y="472" class="note">6) 先尝试 B Primary</text>
+  <path d="M1825 510 L1265 510" class="fail"/>
+  <text x="1460" y="502" class="note">失败</text>
+
+  <path d="M1265 550 L2015 550" class="msg"/>
+  <text x="1555" y="542" class="note">7) 再尝试 B Standby</text>
+  <path d="M2015 580 L1265 580" class="ret"/>
+  <text x="1558" y="572" class="note">成功，返回直链</text>
+
+  <path d="M1265 620 L310 620" class="ret"/>
+  <text x="700" y="612" class="note">8) Source 返回 302 Location</text>
+  <path d="M310 650 L105 650" class="ret"/>
+  <text x="168" y="642" class="note">9) 客户端拿到直链</text>
+
+  <rect x="430" y="690" width="1700" height="380" class="group"/>
+  <text x="442" y="712" class="note">场景 B：Route#1 已匹配但 Pool A 主备都失败 -> 不会尝试 Route#2 -> 直接回退代理</text>
+
+  <path d="M105 740 L310 740" class="msg"/>
+  <text x="145" y="732" class="note">10) 另一个播放请求</text>
+
+  <path d="M310 780 L545 780" class="msg"/>
+  <text x="350" y="772" class="note">11) 再次进入选路</text>
+
+  <path d="M545 820 L755 820" class="msg"/>
+  <text x="592" y="812" class="note">12) Route#1 命中（停止选路）</text>
+
+  <path d="M545 860 L1095 860" class="msg"/>
+  <text x="750" y="852" class="note">13) Route#1 绑定 Pool A</text>
+
+  <path d="M1095 900 L1445 900" class="msg"/>
+  <text x="1215" y="892" class="note">14) A Primary</text>
+  <path d="M1445 930 L1095 930" class="fail"/>
+  <text x="1235" y="922" class="note">失败</text>
+
+  <path d="M1095 965 L1635 965" class="msg"/>
+  <text x="1305" y="957" class="note">15) A Standby</text>
+  <path d="M1635 995 L1095 995" class="fail"/>
+  <text x="1307" y="987" class="note">失败</text>
+
+  <path d="M545 1028 L310 1028" class="ret"/>
+  <text x="336" y="1020" class="note">16) tryResolvePlaybackRoute = false</text>
+
+  <path d="M310 1060 L2145 1060" class="msg"/>
+  <text x="1045" y="1052" class="note">17) 回退 rt.proxy.Handler（代理播放）</text>
+
+  <path d="M2145 1090 L310 1090" class="ret"/>
+  <text x="1038" y="1082" class="note">18) 代理返回上游响应</text>
+
+  <path d="M310 1120 L105 1120" class="ret"/>
+  <text x="154" y="1112" class="note">19) 客户端继续通过代理拉流</text>
+
+  <rect x="30" y="1142" width="2140" height="42" fill="#fff7ed" class="box"/>
+  <text x="46" y="1168" class="small">关键规则：仅当“前一条路由不匹配”才会检查下一条；若“已命中路由但后续失败”，不会切换到下一条路由，而是回退到代理播放。</text>
+</svg>
