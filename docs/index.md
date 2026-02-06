@@ -1,11 +1,11 @@
 ---
 layout: home
-title: EMBY-GATEWAY 文档 | Emby 网关分流与高可用
+title: Feiyue Emby Gateway 文档 | Emby 网关分流与高可用
 description: Emby Gateway 官方文档，覆盖多后端分流、主备切换、安全规则、告警通知和部署运维实践。
 
 hero:
-  name: "EMBY GATEWAY"
-  text: "emby 网关"
+  name: "Feiyue Emby Gateway"
+  text: "飞跃 emby 网关"
   tagline: "智能分流、多后端容灾、安全防护与可观测告警，兼顾稳定与效率。"
   image:
     src: /diagrams/hero-gateway-overview.svg
