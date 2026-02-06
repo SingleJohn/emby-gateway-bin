@@ -50,6 +50,7 @@ export default {
             { text: "管理界面", link: "/guide/management-ui" },
             { text: "基础配置", link: "/guide/basic-configuration" },
             { text: "后端配置", link: "/guide/backend-configuration" },
+            { text: "STRM 功能", link: "/guide/strm-guide" },
             { text: "路由规则和资源池", link: "/guide/routing-and-pool" },
           ]
         },
