@@ -56,7 +56,7 @@ export default {
     ["meta", { name: "author", content: "emby-gateway" }],
     ["meta", { name: "robots", content: "index,follow,max-image-preview:large" }],
     ["meta", { name: "theme-color", content: "#0f7ae5" }],
-    ["meta", { name: "keywords", content: "Emby,Emby Gateway,媒体网关,多后端分流,高可用,故障切换,安全规则,STRM 生成,STRM 文件,S3,CDN,GDrive,Google Drive,123 网盘,本地存储,对象存储,路径映射,资源池" }],
+    ["meta", { name: "keywords", content: "Emby,Emby Gateway,Feiyue Emby Gateway,媒体网关,多后端分流,高可用,故障切换,安全规则,STRM 生成,STRM 文件,S3,CDN,GDrive,Google Drive,123 网盘,本地存储,对象存储,路径映射,资源池" }],
     ["meta", { property: "og:site_name", content: siteName }],
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:title", content: siteName }],

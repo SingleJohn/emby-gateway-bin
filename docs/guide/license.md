@@ -1,21 +1,21 @@
 # 激活与许可证
 
-Emby Gateway 使用许可证系统来管理功能访问权限。本文档将介绍如何激活许可证和续期流程。
+Feiyue Feiyue Emby Gateway 使用许可证系统来管理功能访问权限。本文档将介绍如何激活许可证和续期流程。
 
 ## 激活许可证
 
 ### 1. 获取激活码
 
-从 Emby Gateway 官方渠道获取激活码，激活服务器地址，请求token，激活公钥。
+从 Feiyue Emby Gateway 官方渠道获取激活码，激活服务器地址，请求token，激活公钥。
 
-激活码获取可联系 [zaoxiaban](https://t.me/zaoxiaban_bot) [Frost6549](https://t.me/frost6549_bot)
+激活码获取可联系 [zaoxiaban](https://t.me/zaoxiaban_bot) 、 [Frost6549](https://t.me/frost6549_bot)
 
 
 ### 2. 执行激活
 
 **操作步骤**：
 
-1. 登录 Emby Gateway 管理界面
+1. 登录 Feiyue Emby Gateway 管理界面
 2. 点击左侧菜单中的「授权管理」
 3. 填写授权服务配置，在「授权码」卡片中，在「激活码」输入框中填写您的激活码
 4. 点击「激活」按钮
@@ -24,7 +24,7 @@ Emby Gateway 使用许可证系统来管理功能访问权限。本文档将介�
 
 ## 许可证续期
 
-Emby Gateway 会自动处理许可证续期，您无需手动操作：
+Feiyue Emby Gateway 会自动处理许可证续期，您无需手动操作：
 
 ### 自动续期流程
 
@@ -37,7 +37,7 @@ Emby Gateway 会自动处理许可证续期，您无需手动操作：
 
 **操作步骤**：
 
-1. 登录 Emby Gateway 管理界面
+1. 登录 Feiyue Emby Gateway 管理界面
 2. 点击左侧菜单中的「许可证」
 3. 在「许可证状态」卡片中，您可以查看：
    - **许可证状态**：当前许可证是否有效

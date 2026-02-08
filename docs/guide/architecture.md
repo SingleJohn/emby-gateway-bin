@@ -2,7 +2,7 @@
 
 ## 1. 项目概述
 
-Emby Gateway 是一个功能强大的 Emby 播放网关，专为解决 Emby 媒体服务器的存储分发、高可用和统一管理问题而设计。它能够智能地将播放请求重定向到不同的后端存储（如 S3、CDN、Google Drive 或本地存储），实现流量的智能分发和故障自动切换。
+Feiyue Emby Gateway 是一个功能强大的 Emby 播放网关，专为解决 Emby 媒体服务器的存储分发、高可用和统一管理问题而设计。它能够智能地将播放请求重定向到不同的后端存储（如 S3、CDN、Google Drive 或本地存储），实现流量的智能分发和故障自动切换。
 
 ### 核心价值
 
@@ -16,11 +16,9 @@ Emby Gateway 是一个功能强大的 Emby 播放网关，专为解决 Emby 媒�
 
 ### 整体架构
 
-Emby Gateway 采用分层架构设计，核心组件关系如下图：
+Feiyue Emby Gateway 采用分层架构设计，核心组件关系如下图：
 
-![Emby Gateway 架构图](/diagrams/Gemini_Generated_Image_ddh7fdddh7fdddh7.png)
-
-![Emby Gateway 架构图](/diagrams/architecture-overview.svg)
+![Feiyue Emby Gateway 架构图](/diagrams/architecture-overview.svg)
 
 
 ## 3. 工作流程
@@ -50,11 +48,11 @@ Emby Gateway 采用分层架构设计，核心组件关系如下图：
 
 ## 4. 架构演进
 
-Emby Gateway 采用模块化设计，便于后续功能扩展和架构演进：
+Feiyue Emby Gateway 采用模块化设计，便于后续功能扩展和架构演进：
 
 - **存储后端扩展**：可轻松添加新的存储类型
 - **路由规则增强**：支持更复杂的匹配逻辑
 - **监控系统集成**：可与 Prometheus、Grafana 等监控系统集成
 - **自动化运维**：支持配置的版本管理和回滚
 
-通过不断的架构优化和功能增强，Emby Gateway 将为 Emby 媒体服务器提供更加稳定、高效和灵活的存储分发解决方案。
+通过不断的架构优化和功能增强，Feiyue Emby Gateway 将为 Emby 媒体服务器提供更加稳定、高效和灵活的存储分发解决方案。

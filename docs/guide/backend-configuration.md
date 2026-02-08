@@ -1,10 +1,10 @@
 # 后端配置指南
 
-本文档详细介绍 Emby Gateway 支持的各种后端存储配置方法，包括 S3、CDN、Google Drive 和本地存储等。
+本文档详细介绍 Feiyue Emby Gateway 支持的各种后端存储配置方法，包括 S3、CDN、Google Drive 和本地存储等。
 
 ## 1. 后端类型概述
 
-Emby Gateway 支持以下几种后端类型：
+Feiyue Emby Gateway 支持以下几种后端类型：
 
 | 后端类型 | 适用场景 | 优势 | 配置难度 |
 |---------|---------|------|---------|
@@ -156,7 +156,7 @@ Google Drive 后端用于连接 Google Drive 存储，利用 Google Drive 的存
    ```
 3. 按照提示完成 Google Drive 授权
 4. 查看 rclone 配置文件（通常位于 `~/.config/rclone/rclone.conf`）
-5. 从配置文件中复制 `client_id`、`client_secret` 和 `refresh_token` 到 Emby Gateway 配置中
+5. 从配置文件中复制 `client_id`、`client_secret` 和 `refresh_token` 到 Feiyue Emby Gateway 配置中
 
 ### 4.5 Worker 模式配置
 
@@ -344,6 +344,6 @@ Root Folder ID 配置了 `媒体库文件夹` 的目录id “123456”
 
 ## 总结
 
-正确配置后端存储是 Emby Gateway 正常运行的关键。通过本文档的指南，您应该能够成功配置各种类型的后端存储，根据实际需求选择合适的存储方案，优化媒体文件的存储和访问性能。
+正确配置后端存储是 Feiyue Emby Gateway 正常运行的关键。通过本文档的指南，您应该能够成功配置各种类型的后端存储，根据实际需求选择合适的存储方案，优化媒体文件的存储和访问性能。
 
 如果您在配置过程中遇到问题，请参考本文档的常见问题与解决方案部分，或查看系统日志获取更多信息。
