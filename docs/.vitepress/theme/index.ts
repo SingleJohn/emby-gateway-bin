@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import { onMounted, onUnmounted } from 'vue'
+import ImageCompare from './ImageCompare.vue'
 import './custom.css'
 
 function setupImageZoom() {
@@ -69,6 +70,9 @@ function setupImageZoom() {
 
 export default {
   extends: DefaultTheme,
+  enhanceApp({ app }) {
+    app.component('ImageCompare', ImageCompare)
+  },
   setup() {
     let cleanup: (() => void) | null = null
 

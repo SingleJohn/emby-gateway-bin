@@ -44,7 +44,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: gatewayuser  # 数据库用户名
-      POSTGRES_PASSWORD: V9E91O3t0jyb # 数据库密码
+      POSTGRES_PASSWORD: password # 数据库密码
       POSTGRES_DB: gateway
       TZ: Asia/Shanghai
     ports:
@@ -78,6 +78,7 @@ services:
 
     volumes:
       - ./gateway-data:/app/data
+      - ./gateway-cache:/app/cache
       - /etc/localtime:/etc/localtime:ro
 
     environment:

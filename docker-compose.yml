@@ -39,6 +39,7 @@ services:
 
     volumes:
       - ./gateway-data:/app/data
+      - ./gateway-cache:/app/cache
       - /etc/localtime:/etc/localtime:ro
 
     environment:
