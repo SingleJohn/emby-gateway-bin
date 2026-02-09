@@ -27,7 +27,7 @@
 
 说明：
 - 管理端监听地址/端口可由 `GATEWAY_ADMIN_HOST`、`GATEWAY_ADMIN_PORT` 覆盖
-- Source 端口由业务配置决定，新增 Source 后通常需要重启进程使监听生效
+- Source 端口由业务配置决定，新增/停用 Source 与监听地址端口变更可热更新生效，无需重启进程
 
 
 ## 优先级与生效规则（重要）
