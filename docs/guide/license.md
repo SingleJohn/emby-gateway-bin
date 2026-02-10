@@ -8,7 +8,9 @@ Feiyue Emby Gateway 使用许可证系统来管理功能访问权限。本文档
 
 从 Feiyue Emby Gateway 官方渠道获取激活码，激活服务器地址，请求token，激活公钥。
 
-激活码获取可联系 [zaoxiaban](https://t.me/zaoxiaban_bot) 、 [Frost6549](https://t.me/frost6549_bot)
+激活码获取可加群 ： [Feiyue Emby Gateway 交流群](https://t.me/EmbyGateway) 
+
+或联系 [zaoxiaban](https://t.me/zaoxiaban_bot) 、 [Frost6549](https://t.me/frost6549_bot)
 
 
 ### 2. 执行激活
