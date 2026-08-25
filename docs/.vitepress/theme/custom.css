@@ -14,9 +14,12 @@
   padding-top: 92px;
 }
 
-.VPHome .VPHero .image-container img {
-  border-radius: 20px;
-  box-shadow: 0 18px 48px rgba(31, 142, 241, 0.25);
+.VPHome .VPHero .image-src {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 18px 28px rgba(31, 142, 241, 0.22));
+  cursor: default;
 }
 
 .VPHome .VPHero .tagline {
@@ -182,13 +185,13 @@
   transition: transform 0.18s ease;
 }
 
-.vp-doc img:not(a img),
-.VPHome img:not(a img) {
+.vp-doc img:not(a img):not(.no-zoom),
+.VPHome img:not(a img):not(.no-zoom):not(.image-src) {
   cursor: zoom-in;
 }
 
-.vp-doc img:not(a img):hover,
-.VPHome img:not(a img):hover {
+.vp-doc img:not(a img):not(.no-zoom):hover,
+.VPHome img:not(a img):not(.no-zoom):not(.image-src):hover {
   transform: translateY(-1px);
 }
 

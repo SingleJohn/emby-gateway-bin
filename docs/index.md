@@ -8,7 +8,7 @@ hero:
   text: "飞跃 emby 网关"
   tagline: "302 智能分流、多后端主备、安全防护、播放并发与完整观测。"
   image:
-    src: /diagrams/hero-gateway-overview.svg
+    src: /diagrams/hero-gateway-overview.png
     alt: EMBY-GATEWAY 架构图
   actions:
     - theme: brand

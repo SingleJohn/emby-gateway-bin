@@ -30,6 +30,7 @@ function setupImageZoom() {
 
   const isZoomable = (img: HTMLImageElement) => {
     if (img.closest('a')) return false
+    if (img.closest('.VPHero')) return false
     if (img.classList.contains('no-zoom')) return false
     if (img.closest('.img-zoom-overlay')) return false
     return !!img.closest('.vp-doc, .VPHome')

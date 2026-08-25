@@ -13,7 +13,7 @@ const repoUrl = `https://github.com/${repository}`;
 const siteUrl = (process.env.DOCS_SITE_URL || "https://gateway-doc.henhendeaini.com").replace(/\/+$/, "");
 const siteName = "Feiyue Emby Gateway 文档";
 const siteDescription = "Emby 网关文档：多后端分流、主备切换、安全防护、日志统计与告警通知。";
-const ogImage = `${siteUrl}/diagrams/hero-gateway-overview.svg`;
+const ogImage = `${siteUrl}/diagrams/hero-gateway-overview.png`;
 const websiteJsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
