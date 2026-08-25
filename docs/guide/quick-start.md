@@ -1,40 +1,26 @@
 # 快速开始
 
-本文档目标是 **5-10 分钟跑通最小可用链路**：服务启动、管理后台可访问、基础配置可保存，确保 Emby 媒体能够正常通过网关播放。
+本页使用 PostgreSQL 和 Docker Compose，在约 10 分钟内完成服务启动、后台登录和最小播放链路配置。
 
-## 1. 前置条件
+## 前置条件
 
-### 硬件要求
-- 一台可联网的主机（Linux、Windows 或 macOS）
-- 建议配置：2 核 CPU、4GB 内存、50GB 磁盘空间
-- 网络：稳定的互联网连接，确保端口可访问
+- Docker 20.10+ 和 Docker Compose v2
+- 一台可被 Emby 和客户端访问的主机
+- 一个未被占用的管理端口，示例统一使用 `19999`
+- 至少一个可用的存储后端
 
-### 软件要求
-- **Docker 与 Docker Compose**（推荐部署方式）
-  - Docker 版本：20.10.0 或更高
-  - Docker Compose 版本：1.29.0 或更高
-- **或** 直接使用二进制文件（适用于高级用户）
+生产环境推荐 PostgreSQL。SQLite 适合临时体验，不建议承载长期请求日志。
 
-### 网络要求
-- 已开放管理端端口（默认 `18888`）
-- 已开放 Emby Source 端口（根据配置而定）
-- 如果使用云服务器，需在安全组中放行相应端口
-- 能够稳定访问 Cloudflare Workers 服务（用于处理授权续期）
+## Docker Compose 部署
 
-## 2. 方式一：Docker Compose（推荐）
-
-### 步骤 1：准备目录
-
-创建一个专门的目录用于存放配置和数据：
+创建工作目录：
 
 ```bash
 mkdir -p emby-gateway
 cd emby-gateway
 ```
 
-### 步骤 2：创建 docker-compose.yml 文件
-
-在目录中创建 `docker-compose.yml` 文件，内容如下：
+创建 `docker-compose.yml`：
 
 ```yaml
 services:
@@ -43,8 +29,8 @@ services:
     container_name: pg-emby-gateway
     restart: unless-stopped
     environment:
-      POSTGRES_USER: gatewayuser  # 数据库用户名
-      POSTGRES_PASSWORD: password # 数据库密码
+      POSTGRES_USER: gatewayuser
+      POSTGRES_PASSWORD: replace-with-a-strong-password
       POSTGRES_DB: gateway
       TZ: Asia/Shanghai
     ports:
@@ -52,119 +38,82 @@ services:
     volumes:
       - ./pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U gatewayuser -d gateway"]
+      test: ["CMD-SHELL", "pg_isready -U gatewayuser -d gateway"]
       interval: 5s
       timeout: 3s
       retries: 10
-      start_period: 10s
 
   emby-gateway:
     image: renzhengfei/emby-gateway:latest
     container_name: emby-gateway
     restart: unless-stopped
-
-    # 使用 host 网络，直接连本机 5432, 新增emby source后不需要端口映射
-    network_mode: host  
-
-    # 如果不使用 host 网络，可以使用下面的端口映射, 注意新增 emby source 后需要映射端口
-    # ports:
-    #   - "19999:19999"
-    #   - "127.0.0.1:18889:18889"
-    #   - "18899:18899"
-
+    network_mode: host
     depends_on:
       postgres:
         condition: service_healthy
-
     volumes:
       - ./gateway-data:/app/data
       - ./gateway-cache:/app/cache
       - /etc/localtime:/etc/localtime:ro
-
     environment:
       TZ: Asia/Shanghai
-
-      # ===== Admin Server ===== 管理后台监听地址和端口
       GATEWAY_ADMIN_HOST: 0.0.0.0
-      GATEWAY_ADMIN_PORT: 19999   
-
-      # ===== Database =====
+      GATEWAY_ADMIN_PORT: 19999
       GATEWAY_DB_DRIVER: postgres
-      GATEWAY_DB_DSN: postgresql://gatewayuser:password@127.0.0.1:5432/gateway?sslmode=disable  # 数据库连接字符串(用户名/密码/地址/端口/数据库名)
+      GATEWAY_DB_DSN: postgresql://gatewayuser:replace-with-a-strong-password@127.0.0.1:5432/gateway?sslmode=disable
 ```
 
-**注意**：请将 `password` 替换为强密码。
+> `network_mode: host` 仅适用于 Linux。使用 bridge 网络时，需要同时调整数据库地址，并显式映射管理端口和每个 Source 监听端口。
 
-### 步骤 3：启动服务
-
-执行以下命令启动服务：
+启动并查看状态：
 
 ```bash
 docker compose up -d
-```
-
-### 步骤 4：查看服务状态 与 日志
-
-```bash
 docker compose ps
-docker compose logs -f
+docker compose logs -f emby-gateway
 ```
 
-确保所有服务都处于 `Up` 状态，没有异常日志。
+## 登录后台
 
-## 3. 方式二：二进制直接启动
+示例访问地址：
 
-### 步骤 1：下载二进制文件
-
-从项目发布页面下载适合您系统的二进制文件
-
-[github release](https://github.com/SingleJohn/emby-gateway-bin/releases)
-
-### 步骤 2：启动服务
-
-#### SQLite 方式（快速验证）
-
-SQLite 方式会有日志性能问题，建议在生产环境使用 PostgreSQL 方式。
-
-> **❗** SQLite 未经完整测试，可能会有各种奇奇怪怪的问题，适合快速体验，不建议在生产环境使用，后续可能会移除 SQLite 支持。
-
-```bash
-./emby-gateway
+```text
+http://<服务器IP>:19999/ui/
 ```
 
-#### PostgreSQL 方式（推荐生产环境）
+未配置管理员密码和观察员密码时，后台不要求登录。首次进入后请在「系统 → 网关配置」设置管理员密码。
+
+## 最小播放配置
+
+按依赖顺序完成以下对象：
+
+1. **Emby 源**：填写监听地址、监听端口、上游 Emby 地址和 API Key。
+2. **后端**：选择存储类型并完成认证配置。
+3. **资源池**：选择主后端和可选备后端。
+4. **路径映射**：需要时把 Emby 真实路径转换为后端 object key。
+5. **路由**：在 Source 中按真实媒体路径绑定映射集和资源池。
+
+保存后无需重启。请确认防火墙、云安全组和 Docker 网络已放行 Source 监听端口。
+
+## 验证链路
+
+1. 在 Emby 客户端播放一个测试媒体。
+2. 打开「观测中心 → 流量分析 → 302 链路」。
+3. 确认请求命中了预期路由、资源池和后端。
+4. 若没有生成 302，查看同页请求详情和「日志与事件」。
+
+继续阅读 [基础配置](/guide/basic-configuration)、[后端配置](/guide/backend-configuration) 和 [路由规则和资源池](/guide/routing-and-pool)。
+
+## 二进制启动
+
+正式版本与滚动 nightly 构建均发布在 [GitHub Releases](https://github.com/SingleJohn/emby-gateway-bin/releases)。生产环境优先使用明确版本号的正式 Release；`nightly` 会随 `main` 更新，适合验证最新修复。
+
+PostgreSQL 示例：
 
 ```bash
 GATEWAY_DB_DRIVER=postgres \
 GATEWAY_DB_DSN='postgresql://user:pass@127.0.0.1:5432/gateway?sslmode=disable' \
 GATEWAY_ADMIN_HOST=0.0.0.0 \
-GATEWAY_ADMIN_PORT=18888 \
-./emby-gateway
+GATEWAY_ADMIN_PORT=19999 \
+./emby-s3-gateway
 ```
-
-**注意**：请确保 PostgreSQL 数据库已创建，并且用户有适当的权限。
-
-## 4. 启动后验证
-
-### 步骤 1：访问管理页面
-
-打开浏览器，访问以下地址：
-
-```
-http://<你的IP>:18888/ui/
-```
-
-### 步骤 2：登录验证
-
-- 默认情况下，管理后台不需要密码（首次访问）
-- 如果设置了管理密码，请输入正确的密码登录
-
-### 步骤 3：功能验证
-
-1. 检查是否能正常加载配置页面
-2. 尝试修改一个非敏感配置并保存（例如修改系统名称）
-3. 确认保存成功，没有错误提示
-
-## 5. 最小配置指南
-
-参看[基础配置](/guide/basic-configuration.md)页面.

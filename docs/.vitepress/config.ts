@@ -87,7 +87,14 @@ export default {
       { text: "功能总览", link: "/guide/features-overview" },
       { text: "快速开始", link: "/guide/quick-start" },
       { text: "部署指南", link: "/guide/deployment" },
-      { text: "故障排查", link: "/ops/troubleshooting" }
+      {
+        text: "观测与运维",
+        items: [
+          { text: "可观测性", link: "/ops/observability" },
+          { text: "数据库维护", link: "/ops/database-maintenance" },
+          { text: "故障排查", link: "/ops/troubleshooting" }
+        ]
+      }
     ],
     sidebar: {
       "/guide/": [
@@ -98,7 +105,7 @@ export default {
             { text: "项目架构", link: "/guide/architecture" },
             { text: "快速开始", link: "/guide/quick-start" },
             { text: "部署指南", link: "/guide/deployment" },
-            { text: "页面截图", link: "/guide/ui-screenshot-plan" }
+            { text: "页面导览", link: "/guide/ui-screenshot-plan" }
           ]
         },
         {
@@ -107,6 +114,7 @@ export default {
             { text: "管理界面", link: "/guide/management-ui" },
             { text: "基础配置", link: "/guide/basic-configuration" },
             { text: "后端配置", link: "/guide/backend-configuration" },
+            { text: "115 后端", link: "/guide/backend-115" },
             { text: "STRM 功能", link: "/guide/strm-guide" },
             { text: "路由匹配规则", link: "/guide/route-matching-rules" },
             { text: "路由规则和资源池", link: "/guide/routing-and-pool" },
@@ -139,10 +147,11 @@ export default {
       ],
       "/ops/": [
         {
-          text: "故障排查",
+          text: "观测与运维",
           items: [
-            { text: "排障指南", link: "/ops/troubleshooting" },
-            { text: "可观测性", link: "/ops/observability" }
+            { text: "可观测性", link: "/ops/observability" },
+            { text: "数据库维护", link: "/ops/database-maintenance" },
+            { text: "排障指南", link: "/ops/troubleshooting" }
           ]
         }
       ]

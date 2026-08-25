@@ -73,7 +73,6 @@ flowchart TD
 3. 每个资源池都配备后端
 4. 每次只改一条规则，改完立即验证播放
 
-## 7. 截图补充位（后续可直接替换）
+## 7. 页面参考
 
-- 规则列表页：`docs/assets/images/05-route-rule.png`
-- 资源池设置页：`docs/assets/images/04-resource-pool.png`
+新版后台导航和主要页面参见 [页面导览](/guide/ui-screenshot-plan)。

@@ -1,88 +1,93 @@
 # 部署指南
 
-本文档给出详细的部署参数与部署建议，目标是稳定运行、可维护、可排障。
+推荐生产拓扑为 `emby-gateway + PostgreSQL`。SQLite 保留为轻量兼容模式，不适合长期、高写入量的请求日志。
 
-部署方式参见 [快速开始](quick-start.md)
+部署示例参见 [快速开始](/guide/quick-start)。
 
-## 单机模式（推荐起步）
+## 网络规划
 
-- 组件：`emby-gateway + PostgreSQL`
-- 适用：个人/小团队、先跑通业务链路
-- 优点：部署简单，故障域小
-
-## 分离模式（推荐生产）
-
-- 组件：`emby-gateway` 与 `PostgreSQL` 分机部署
-- 适用：生产环境、需要独立扩容数据库
-- 建议：数据库启用定期备份与监控
-
-## 系统配置项
-
-| 项目 | 默认值 | 说明 |
+| 端口 | 用途 | 是否固定 |
 |---|---|---|
-| 管理端口 | `18888` | 管理后台访问端口 |
-| Source 监听端口 | 按配置 | 每个启用的 Source 独立监听 |
-| 控制台路径前缀 | `` | 可自定义以保护管理后台 |
-| Stream 前缀 | `/stream` | 可按 Source 自定义 `stream_path_prefix` |
+| 管理端口 | WebUI 与 Admin API | 默认 `18888`，可覆盖 |
+| Source 端口 | Emby 客户端访问入口 | 每个 Source 独立配置 |
+| PostgreSQL | 配置、日志与统计 | 默认 `5432`，不建议暴露公网 |
+| Local Agent | 目录枚举和本地直链 | 按 Agent 部署配置 |
 
-说明：
-- 管理端监听地址/端口可由 `GATEWAY_ADMIN_HOST`、`GATEWAY_ADMIN_PORT` 覆盖
-- Source 端口由业务配置决定，新增/停用 Source 与监听地址端口变更可热更新生效，无需重启进程
+示例使用 `19999` 作为管理端口只是部署覆盖值，不是程序默认值。
 
+Source 的新增、停用以及监听地址或端口变更支持热更新，但操作系统防火墙、云安全组和 Docker 端口映射不会自动变化。
 
-## 优先级与生效规则（重要）
+## 配置优先级
 
-- 参数优先级：命令行参数 > 环境变量 > 程序内默认值
-- `-db-dsn` 非空时覆盖 `-db`；若 `-db-dsn` 为空但 `-db` 看起来像 DSN，也会按 DSN 处理
-- `-db-driver` 为空时自动推断：有 DSN 则 `postgres`，否则 `sqlite`
-- `-admin-host` 仅在非空时覆盖配置；`-admin-port` 仅在 `>0` 时覆盖配置
-- `-license-*-seconds` 仅在 `>0` 时覆盖配置
-
+- 命令行参数高于环境变量默认值和数据库配置。
+- `-db-dsn` 非空时覆盖 `-db`。
+- `-db-driver` 为空时，有 DSN 推断为 `postgres`，否则使用 `sqlite`。
+- `-admin-host` 仅在非空时覆盖数据库配置。
+- `-admin-port` 和许可证秒数参数仅在大于 `0` 时覆盖数据库配置。
+- `-config` 仅为兼容保留，当前版本不会从该文件加载配置。
 
 ## 命令行参数
 
-| 参数 | 默认值 | 说明 |
+| 参数 | 启动默认值 | 说明 |
 |---|---|---|
-| `-db` | `data/gateway.db` | 兼容参数：可传 SQLite 文件路径，也可传 DSN |
+| `-config` | `config.yaml` | 已废弃并忽略 |
+| `-db` | `data/gateway.db` | SQLite 路径或兼容 DSN |
 | `-db-driver` | 自动推断 | `sqlite` 或 `postgres` |
-| `-db-dsn` | 空 | 数据库 DSN；设置后优先于 `-db` |
-| `-db-allow-destructive` | `false`| 允许破坏性迁移（drop/recreate） |
-| `-admin-host` | `0.0.0.0` | 覆盖默认的管理端监听地址 |
-| `-admin-port` | `18888` | 覆盖默认的管理端端口；`>0` 才生效 |
-| `-license-server-url` | 空 | 许可证服务器地址 |
-| `-license-token` | 空 | Bearer Token, 用与授权与续期接口 |
-| `-license-public-key` | 空 | 许可证公钥内容|
-| `-license-dir` | `data/license` | 本地许可证目录 |
+| `-db-dsn` | 空 | 数据库 DSN，优先于 `-db` |
+| `-db-allow-destructive` | `false` | 允许破坏性数据库迁移；只在明确理解影响时开启 |
+| `-admin-host` | 空 | 非空时覆盖数据库中的监听地址 |
+| `-admin-port` | `0` | 大于 `0` 时覆盖数据库中的端口 |
+| `-license-server-url` | 空 | 许可证服务地址 |
+| `-license-token` | 空 | 许可证 Bearer Token |
+| `-license-public-key` | 空 | Base64 或 `ssh-ed25519` 公钥 |
+| `-license-dir` | 空 | 最终默认 `data/license` |
+| `-license-renew-seconds` | `0` | 续期周期覆盖值 |
+| `-license-rollback-tolerance-seconds` | `0` | 时间回拨容忍覆盖值 |
+| `-license-activate-timeout-seconds` | `0` | 激活请求超时覆盖值 |
 
 ## 环境变量
 
-| 环境变量 | 对应参数/行为 | 说明 |
-|---|---|---|
-| `GATEWAY_DB_DRIVER` | `-db-driver` | `sqlite` / `postgres` |
-| `GATEWAY_DB_DSN` | `-db-dsn` | PostgreSQL DSN |
-| `GATEWAY_DB_ALLOW_DESTRUCTIVE_MIGRATIONS` | `-db-allow-destructive` | `1` / `true` 视为开启 |
-| `GATEWAY_ADMIN_HOST` | `-admin-host` | 管理端地址覆盖 |
-| `GATEWAY_ADMIN_PORT` | `-admin-port` | 管理端端口覆盖 |
-| `GATEWAY_LICENSE_SERVER_URL` | `-license-server-url` | 许可证服务地址 |
-| `GATEWAY_LICENSE_SERVER_TOKEN` | `-license-token` | Bearer Token, 用与授权与续期接口 |
-| `GATEWAY_LICENSE_PUBLIC_KEY` | `-license-public-key` | 许可证公钥 |
-| `GATEWAY_LICENSE_DIR` | `-license-dir` | 许可证本地目录 |
+| 环境变量 | 说明 |
+|---|---|
+| `GATEWAY_DB_DRIVER` | `sqlite` 或 `postgres` |
+| `GATEWAY_DB_DSN` | PostgreSQL DSN |
+| `DATABASE_URL` | 仅在 `GATEWAY_DB_DSN` 为空时作为 DSN 兜底 |
+| `GATEWAY_DB_ALLOW_DESTRUCTIVE_MIGRATIONS` | `1` 或 `true` 开启破坏性迁移 |
+| `GATEWAY_ADMIN_HOST` | 管理端监听地址覆盖值 |
+| `GATEWAY_ADMIN_PORT` | 管理端端口覆盖值 |
+| `GATEWAY_LICENSE_SERVER_URL` | 许可证服务地址 |
+| `GATEWAY_LICENSE_SERVER_TOKEN` | 首选许可证 Token |
+| `GATEWAY_LICENSE_TOKEN` | 前一变量为空时的 Token 兜底 |
+| `GATEWAY_LICENSE_PUBLIC_KEY` | 许可证公钥 |
+| `GATEWAY_LICENSE_DIR` | 许可证本地目录 |
+| `GATEWAY_LICENSE_RENEW_SECONDS` | 续期周期 |
+| `GATEWAY_LICENSE_ROLLBACK_TOLERANCE_SECONDS` | 时间回拨容忍 |
+| `GATEWAY_LICENSE_ACTIVATE_TIMEOUT_SECONDS` | 激活请求超时 |
+| `GATEWAY_CFG_ENC_KEY` | 配置敏感字段加密密钥；已加密数据库启动时必须提供同一密钥 |
 
-
-
-## Local Agent 环境变量
+## Local Agent
 
 | 环境变量 | 说明 |
 |---|---|
-| `LOCAL_AGENT_HOST` | 监听地址（默认 `0.0.0.0`） |
-| `LOCAL_AGENT_PORT` | 监听端口（必填） |
-| `LOCAL_AGENT_SYNC_TOKEN` | 同步鉴权 token（必填） |
-| `LOCAL_AGENT_CORS_ALLOW_ORIGINS` | 允许跨域来源，逗号分隔 |
+| `LOCAL_AGENT_HOST` | 监听地址，默认 `0.0.0.0` |
+| `LOCAL_AGENT_PORT` | 监听端口，必填 |
+| `LOCAL_AGENT_SYNC_TOKEN` | 网关同步鉴权 Token，必填 |
+| `LOCAL_AGENT_CORS_ALLOW_ORIGINS` | 允许的浏览器来源，逗号分隔 |
 
-## 安全
+网关的 `local_agent` 后端还需要配置客户端可访问的 `public_base_url`、网关可访问的 `agent_api_url`、`base_dir`、签名密钥和相同的同步 Token。
 
-1. 首次部署后，配置页面配置登录密码
-2. 强密码和随机密钥（数据库密码、Token、Sign Secret）
-3. 管理面板不要直接裸露公网（至少加反代鉴权/IP 白名单）
-4. 定期轮换敏感配置（数据库账号、Worker/Agent 同步 Token）
-5. 持久化目录做好权限控制（`gateway-data`、`pg-data`）
+## 数据与升级
+
+- 持久化 `gateway-data`、`gateway-cache` 和 PostgreSQL 数据目录。
+- 升级前备份 PostgreSQL，并记录当前正式版本号。
+- 不要在未知数据库结构上随意开启破坏性迁移。
+- 正式版本使用版本号或 `latest`；`nightly` 是滚动预发布，可能包含尚未形成正式版本的变更。
+- 升级后检查控制台版本、Source 监听、许可证状态、数据库维护页和一次真实播放链路。
+
+## 安全基线
+
+1. 设置管理员密码；需要只读协作时另设观察员密码。
+2. 管理端通过反向代理、VPN 或 IP 策略限制访问。
+3. 数据库只允许受信网络访问，并使用独立强密码。
+4. 定期轮换 Emby API Key、网盘凭据、Worker/Agent Token 和签名密钥。
+5. 不要把带真实凭据的配置、日志或截图发布到公开问题单。

@@ -131,11 +131,6 @@
 5. 忘记保存配置
 6. 配置了路由规则，但 Emby 路径与规则不匹配
 
-## 9. 截图补充位（后续可直接替换）
+## 9. 页面参考
 
-建议把对应页面截图放到 `docs/assets/images/`，并按如下文件名补充：
-
-- `02-source-config.png`
-- `03-backend-config.png`
-- `04-resource-pool.png`
-- `05-route-rule.png`
+新版后台导航和主要页面参见 [页面导览](/guide/ui-screenshot-plan)。

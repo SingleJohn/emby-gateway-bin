@@ -1,53 +1,59 @@
-# 系统页面截图
+# 页面导览
 
-## Emby服务
+以下截图来自 `v1.8.11` 线上部署。控制台和观测页保留汇总 KPI 与趋势曲线；用户、IP、媒体路径、地址、端口、策略参数和凭据不进入文档，安全与配置页的实际参数已遮挡。
 
-### Emby源管理
-<img width="1839" height="1254" alt="image" src="https://github.com/user-attachments/assets/f991309f-0ed1-4ce2-86f7-a9bca5db11f0" />
+## 控制台
 
-### 路径映射
-<img width="1942" height="1242" alt="image" src="https://github.com/user-attachments/assets/be6c70b8-e4aa-4c92-96fa-8deea2c06a5c" />
+控制台提供系统当前状态摘要，并引导进入观测中心查看明细。
 
-### 后端与资源池
-<img width="1854" height="1260" alt="image" src="https://github.com/user-attachments/assets/f5396206-5b9a-4e37-bd48-142753aba545" />
+![控制台](/screenshots/overview.png)
 
+## 观测中心
 
-## 请求分析
+### 实时看板
 
-### 完整的请求记录
-<img width="1893" height="1274" alt="image" src="https://github.com/user-attachments/assets/71fa907b-8a33-4eda-ae8b-6b430c0588d6" />
+展示当前播放会话、并发限制状态和短时并发趋势。
 
-### 302日志记录
-<img width="1903" height="1266" alt="image" src="https://github.com/user-attachments/assets/b64959d6-711a-4cab-b762-32f297482ed1" />
+![实时看板](/screenshots/observability-live.png)
 
-### 详细请求分析
-<img width="1236" height="1091" alt="image" src="https://github.com/user-attachments/assets/e3907694-4f0b-49bc-bc79-25e007ce9bcc" />
+### 流量分析
 
-### 请求链路分析
-<img width="1932" height="1477" alt="image" src="https://github.com/user-attachments/assets/015a1453-9073-462c-9cdc-a3fcfb94080a" />
+整合请求日志、流量趋势和 302 路由链路。
 
+![流量分析](/screenshots/observability-traffic.png)
 
-## 存储相关
+### 媒体与用户
 
-### 资源预览
-<img width="1899" height="1233" alt="image" src="https://github.com/user-attachments/assets/eaca489b-1efc-4075-87f4-b0364924caf5" />
+从媒体交付和用户使用两个角度查看播放行为。
 
-### strm生成
-<img width="2070" height="1371" alt="image" src="https://github.com/user-attachments/assets/da66171f-4475-40cb-8000-7b2282a3071c" />
-<img width="1992" height="1383" alt="image" src="https://github.com/user-attachments/assets/da23fc24-955a-45bc-b948-c65cf66e8eef" />
-<img width="1470" height="1317" alt="image" src="https://github.com/user-attachments/assets/d2c5b8fc-4b1a-49fe-bb5d-72bb8d0ab02f" />
+![媒体与用户](/screenshots/observability-media.png)
 
+### 访问来源
 
+查看客户端 IP 的地域、运营商和网络类型分布。
 
-## 安全相关
+![访问来源](/screenshots/observability-access.png)
 
-### 安全规则
-<img width="2559" height="1398" alt="image" src="https://github.com/user-attachments/assets/d24b164b-f49d-44bb-ab82-5f08c3c19a70" />
+### 日志与事件
 
-### 安全告警
-<img width="2559" height="1398" alt="image" src="https://github.com/user-attachments/assets/c7ea7932-c275-4b41-bca9-7e3f9dc6eb61" />
+在安全拦截和控制台日志之间切换，排障时可按同一时间范围对照。
 
-### 拦截日志
-<img width="2559" height="1398" alt="image" src="https://github.com/user-attachments/assets/639e3704-4632-4e35-a335-42d81aca37dd" />
+![日志与事件](/screenshots/observability-logs.png)
 
+## STRM 任务
 
+任务配置与最近运行分为两个视图。
+
+![STRM 任务](/screenshots/strm-tasks.png)
+
+## 安全规则
+
+安全页集中管理接口防护、真实 IP、登录失败防护、并发播放和访问规则。
+
+![安全规则，实际策略值已遮挡](/screenshots/security-redacted.png)
+
+## 网关配置
+
+网关配置包含管理端、观察员、观测保留、IP 查询、GDrive Worker 和数据库维护。
+
+![网关配置，实际配置值已遮挡](/screenshots/config-redacted.png)
