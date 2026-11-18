@@ -102,7 +102,7 @@ http://<服务器IP>:19999/ui/
 3. 确认请求命中了预期路由、资源池和后端。
 4. 若没有生成 302，查看同页请求详情和「日志与事件」。
 
-继续阅读 [基础配置](/guide/basic-configuration)、[后端配置](/guide/backend-configuration) 和 [路由规则和资源池](/guide/routing-and-pool)。
+继续阅读 [后端配置](/guide/backend-configuration) 和 [路由规则和资源池](/guide/routing-and-pool)。
 
 ## 二进制启动
 

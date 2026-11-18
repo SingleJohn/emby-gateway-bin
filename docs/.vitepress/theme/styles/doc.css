@@ -1,0 +1,141 @@
+/* ── 全站底纹：与管理界面一致的浅蓝柔光 ── */
+.VPContent.is-home,
+.VPContent.has-sidebar {
+  background: var(--eg-glow);
+  background-attachment: fixed;
+}
+
+.VPNavBar.has-sidebar .content-body,
+.VPNavBar:not(.home) .content-body {
+  backdrop-filter: saturate(160%) blur(16px);
+}
+
+.VPNavBarTitle .title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ── 侧栏分组标题 ── */
+.VPSidebarItem.level-0 > .item .text {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-3);
+}
+
+/* ── 正文 ── */
+.vp-doc h1 {
+  letter-spacing: -0.02em;
+}
+
+.vp-doc h2 {
+  letter-spacing: -0.01em;
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.8;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--eg-border);
+  border-radius: var(--eg-radius-inner);
+  overflow: hidden;
+}
+
+.vp-doc th,
+.vp-doc td {
+  border: none;
+  border-bottom: 1px solid var(--eg-border);
+}
+
+.vp-doc tr:last-child td {
+  border-bottom: none;
+}
+
+.vp-doc tr:nth-child(2n) {
+  background: transparent;
+}
+
+.vp-doc th {
+  background: var(--eg-surface-2);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.vp-doc td code {
+  white-space: nowrap;
+}
+
+.vp-doc .custom-block {
+  border-radius: var(--eg-radius-inner);
+}
+
+.vp-doc div[class*='language-'] {
+  border-radius: var(--eg-radius-inner);
+  border: 1px solid var(--eg-border);
+}
+
+/* 菜单路径：<span class="ui-path">系统 › 系统设置</span> */
+.vp-doc .ui-path {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  white-space: nowrap;
+}
+
+/* 文内截图 */
+.vp-doc img {
+  border-radius: var(--eg-radius-inner);
+}
+
+.vp-doc img:not(a img):not(.no-zoom) {
+  cursor: zoom-in;
+}
+
+/* ── 点击放大 ── */
+.img-zoom-lock {
+  overflow: hidden;
+}
+
+.img-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8, 13, 23, 0.8);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  cursor: zoom-out;
+}
+
+.img-zoom-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.img-zoom-preview {
+  max-width: min(94vw, 1600px);
+  max-height: 92vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-zoom-overlay {
+    transition: none;
+  }
+}

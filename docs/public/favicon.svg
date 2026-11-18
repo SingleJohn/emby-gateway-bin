@@ -1,12 +1,19 @@
-<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EMBY-GATEWAY icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-label="Feiyue Emby Gateway">
   <defs>
-    <linearGradient id="bg" x1="32" y1="20" x2="220" y2="236" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#1A7EF0"/>
-      <stop offset="1" stop-color="#31A4FF"/>
+    <linearGradient id="bg" x1="4" y1="2" x2="36" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.55" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="hl" x1="20" y1="0" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#bg)"/>
-  <rect x="46" y="52" width="164" height="152" rx="28" fill="white" fill-opacity="0.14"/>
-  <path d="M78 86H176V108H102V126H168V147H102V170H176V192H78V86Z" fill="white"/>
-  <path d="M164 86H184L148 192H128L164 86Z" fill="#DDF0FF"/>
+  <rect width="40" height="40" rx="11" fill="url(#bg)"/>
+  <rect width="40" height="22" rx="11" fill="url(#hl)"/>
+  <path d="M13 12.5c0-1.2 1.3-1.9 2.3-1.3l9.4 6.3c.9.6.9 1.9 0 2.5l-9.4 6.3c-1 .7-2.3-.1-2.3-1.3V12.5z" fill="#fff"/>
+  <path d="M25 20h3.5m0 0v-5.5H31m-2.5 5.5v5.5H31" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <circle cx="31.5" cy="14.5" r="1.8" fill="#fff"/>
+  <circle cx="31.5" cy="25.5" r="1.8" fill="#fff"/>
 </svg>

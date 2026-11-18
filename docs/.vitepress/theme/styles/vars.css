@@ -1,0 +1,135 @@
+/**
+ * 设计令牌：与管理界面（webui v3）同一套视觉——浅蓝通透底、白色大圆角卡片、蓝调柔和阴影。
+ * 这里把 webui 的令牌映射到 VitePress 的 --vp-* 变量，组件里只引用 --eg-* 或 --vp-*。
+ */
+:root {
+  /* 品牌蓝（webui 默认主色 #2563eb） */
+  --eg-primary: #2563eb;
+  --eg-primary-rgb: 37, 99, 235;
+  --eg-sky: #38bdf8;
+  --eg-violet: #a78bfa;
+
+  /* 功能域色：只用于图标徽章 */
+  --eg-grad-blue: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+  --eg-grad-sky: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  --eg-grad-violet: linear-gradient(135deg, #a78bfa 0%, #6d28d9 100%);
+  --eg-grad-teal: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%);
+  --eg-grad-amber: linear-gradient(135deg, #fbbf24 0%, #ea580c 100%);
+  --eg-grad-rose: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+  --eg-grad-emerald: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  --eg-grad-slate: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
+
+  --eg-bg: #f2f5fb;
+  --eg-surface: #ffffff;
+  --eg-surface-2: #f6f8fc;
+  --eg-border: #e6ebf3;
+  --eg-border-strong: #d3dbe8;
+  --eg-text: #0f172a;
+  --eg-text-2: #475569;
+  --eg-text-3: #64748b;
+
+  --eg-radius-card: 16px;
+  --eg-radius-inner: 12px;
+  --eg-shadow-flat: 0 1px 2px rgba(15, 23, 42, 0.04), 0 2px 8px -2px rgba(37, 99, 235, 0.06);
+  --eg-shadow-raised: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 28px -10px rgba(37, 99, 235, 0.18);
+  --eg-shadow-shot: 0 30px 60px -24px rgba(15, 23, 42, 0.28), 0 12px 24px -12px rgba(37, 99, 235, 0.18);
+
+  --eg-glow:
+    radial-gradient(900px 520px at 8% -10%, rgba(37, 99, 235, 0.12), transparent 70%),
+    radial-gradient(760px 480px at 100% 0%, rgba(14, 165, 233, 0.1), transparent 70%);
+
+  /* ── 映射到 VitePress ── */
+  --vp-c-brand-1: #1d4ed8;
+  --vp-c-brand-2: #2563eb;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgba(37, 99, 235, 0.12);
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f8fc;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f2f5fb;
+  --vp-c-divider: #e6ebf3;
+  --vp-c-border: #d3dbe8;
+  --vp-c-gutter: #e6ebf3;
+  --vp-c-text-1: #0f172a;
+  --vp-c-text-2: #475569;
+  --vp-c-text-3: #64748b;
+
+  --vp-c-tip-1: #1d4ed8;
+  --vp-c-tip-2: #2563eb;
+  --vp-c-tip-3: #3b82f6;
+  --vp-c-tip-soft: #eff6ff;
+
+  --vp-font-family-base:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Noto Sans SC', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --vp-font-family-mono:
+    ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    monospace;
+
+  --vp-button-brand-bg: #2563eb;
+  --vp-button-brand-hover-bg: #1d4ed8;
+  --vp-button-brand-active-bg: #1e40af;
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-hover-border: transparent;
+
+  --vp-home-hero-name-color: var(--vp-c-text-1);
+
+  --vp-nav-bg-color: rgba(255, 255, 255, 0.78);
+  --vp-sidebar-bg-color: #f8fafd;
+  --vp-code-block-bg: #f6f8fc;
+  --vp-custom-block-tip-bg: #eff6ff;
+  --vp-custom-block-tip-border: transparent;
+}
+
+.dark {
+  --eg-bg: #0b1120;
+  --eg-surface: #111a2e;
+  --eg-surface-2: #16213a;
+  --eg-border: #1f2b46;
+  --eg-border-strong: #2b3a5c;
+  --eg-text: #f1f5f9;
+  --eg-text-2: #cbd5e1;
+  --eg-text-3: #94a3b8;
+
+  --eg-shadow-flat: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --eg-shadow-raised: 0 12px 28px -10px rgba(0, 0, 0, 0.6);
+  --eg-shadow-shot: 0 30px 60px -24px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(148, 163, 184, 0.08);
+
+  --eg-glow:
+    radial-gradient(900px 520px at 8% -10%, rgba(37, 99, 235, 0.18), transparent 70%),
+    radial-gradient(760px 480px at 100% 0%, rgba(14, 165, 233, 0.08), transparent 70%);
+
+  --vp-c-brand-1: #93c5fd;
+  --vp-c-brand-2: #60a5fa;
+  --vp-c-brand-3: #3b82f6;
+  --vp-c-brand-soft: rgba(96, 165, 250, 0.16);
+
+  --vp-c-bg: #0b1120;
+  --vp-c-bg-alt: #0e1628;
+  --vp-c-bg-elv: #111a2e;
+  --vp-c-bg-soft: #111a2e;
+  --vp-c-divider: #1f2b46;
+  --vp-c-border: #2b3a5c;
+  --vp-c-gutter: #060a14;
+  --vp-c-text-1: #f1f5f9;
+  --vp-c-text-2: #cbd5e1;
+  --vp-c-text-3: #94a3b8;
+
+  --vp-c-tip-1: #93c5fd;
+  --vp-c-tip-2: #60a5fa;
+  --vp-c-tip-3: #3b82f6;
+  --vp-c-tip-soft: rgba(59, 130, 246, 0.12);
+
+  --vp-button-brand-bg: #2563eb;
+  --vp-button-brand-hover-bg: #3b82f6;
+  --vp-button-brand-active-bg: #1d4ed8;
+  --vp-button-brand-text: #fff;
+  --vp-button-brand-hover-text: #fff;
+  --vp-button-brand-active-text: #fff;
+
+  --vp-nav-bg-color: rgba(11, 17, 32, 0.78);
+  --vp-sidebar-bg-color: #0e1628;
+  --vp-code-block-bg: #111a2e;
+  --vp-custom-block-tip-bg: rgba(59, 130, 246, 0.1);
+}
