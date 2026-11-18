@@ -7,7 +7,7 @@ withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 </script>
 
 <template>
-  <div class="flow" :class="{ compact }" role="img" aria-label="请求流程：播放器请求先到网关，网关依次做路由匹配、路径映射、选择资源池后端，再把 302 直链返回给播放器，播放器直接从存储拉流；未匹配的请求原样代理到 Emby。">
+  <div class="flow" :class="{ compact }" role="img" aria-label="请求流程：播放器请求先到网关，网关依次做路由匹配、路径映射、选择资源池后端，再把 302 直链返回给播放器，播放器直接从存储拉流；没有命中路由规则的请求原样代理到 Emby。">
     <div class="node client">
       <span class="node-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2.5" /><path d="M8 21h8M12 17v4" /><path d="M10.5 8.5v5l4-2.5z" class="fill" /></svg>
@@ -28,9 +28,9 @@ withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
       <ol class="steps">
         <li><em>1</em><span><b>路由规则</b>按媒体路径找到对应规则</span></li>
         <li><em>2</em><span><b>路径映射</b>把 Emby 里的路径换成存储里的路径</span></li>
-        <li><em>3</em><span><b>资源池</b>优先主后端，异常时切到备用</span></li>
+        <li><em>3</em><span><b>资源池</b>先用主后端，取不到直链时改用备用</span></li>
       </ol>
-      <div class="fallback">没有匹配的规则或映射：原样代理给 Emby，播放不中断</div>
+      <div class="fallback">没有命中路由规则、强制映射未命中，或主备后端都取不到直链：原样代理给 Emby，播放不中断</div>
     </div>
 
     <div class="arrow" aria-hidden="true"><span>302 直链</span></div>

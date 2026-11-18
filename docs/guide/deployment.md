@@ -1,93 +1,157 @@
-# 部署指南
+---
+title: 部署与升级
+description: 飞跃 Emby 网关的端口规划、Docker 与二进制部署、数据目录、数据库选择、反向代理、升级回滚和安全基线。
+---
 
-推荐生产拓扑为 `emby-gateway + PostgreSQL`。SQLite 保留为轻量兼容模式，不适合长期、高写入量的请求日志。
+# 部署与升级
 
-部署示例参见 [快速开始](/guide/quick-start)。
+本页讲正式部署前需要想清楚的事：端口怎么分、数据放在哪、用哪种数据库、怎么升级。只想先跑起来，看 [快速开始](/guide/quick-start) 就够了。
 
-## 网络规划
+所有启动参数和环境变量的完整列表见 [启动参数与环境变量](/reference/cli-env)。
 
-| 端口 | 用途 | 是否固定 |
+## 端口规划
+
+网关会监听两类端口：
+
+| 端口 | 谁访问 | 默认值 | 说明 |
+|---|---|---|---|
+| 管理端口 | 管理员的浏览器 | `18888` | 管理界面和管理 API。可用 `GATEWAY_ADMIN_PORT` 或在系统设置里修改 |
+| Emby 源端口 | 播放器 | 无，每个源单独设置 | 每个 Emby 源的「监听端口」，播放器连接这里 |
+
+文档示例里的 `19999` 是通过 `GATEWAY_ADMIN_PORT` 指定的，不是默认值。
+
+### host 网络与端口映射
+
+**host 网络（推荐，仅 Linux）**：容器直接使用宿主机的网络，新增 Emby 源或修改端口后不需要改 compose 文件。
+
+**端口映射**：不能用 host 网络时（例如 macOS、Windows 的 Docker Desktop），需要把管理端口和每个 Emby 源端口都列出来：
+
+```yaml
+services:
+  emby-gateway:
+    image: renzhengfei/emby-gateway:latest
+    ports:
+      - "127.0.0.1:19999:19999"   # 管理端口，只允许本机访问
+      - "18889:18889"             # Emby 源 1
+      - "18899:18899"             # Emby 源 2
+```
+
+这时每新增一个 Emby 源，都要在这里加一行并重建容器。如果用的是 PostgreSQL，数据库地址也不能再写 `127.0.0.1`，要改成数据库容器的服务名（如 `postgres:5432`）。
+
+::: warning
+网关会自动监听新端口，但防火墙、云服务器安全组和 Docker 端口映射都不会自动变化，需要你手动放行。
+:::
+
+## 部署方式
+
+### Docker
+
+镜像：`renzhengfei/emby-gateway:latest`，支持 `amd64` 和 `arm64`。compose 示例见 [快速开始](/guide/quick-start#部署)。
+
+容器内的工作目录是 `/app`，需要挂载的目录：
+
+| 容器内路径 | 内容 | 是否必须 |
 |---|---|---|
-| 管理端口 | WebUI 与 Admin API | 默认 `18888`，可覆盖 |
-| Source 端口 | Emby 客户端访问入口 | 每个 Source 独立配置 |
-| PostgreSQL | 配置、日志与统计 | 默认 `5432`，不建议暴露公网 |
-| Local Agent | 目录枚举和本地直链 | 按 Agent 部署配置 |
+| `/app/data` | SQLite 数据库 `gateway.db`、授权文件（`data/license`） | 必须持久化 |
+| `/app/cache` | 磁盘缓存（Emby 网页资源和图片） | 建议挂载，丢失不影响配置 |
 
-示例使用 `19999` 作为管理端口只是部署覆盖值，不是程序默认值。
+::: tip 缓存不在数据目录里
+磁盘缓存默认写在 `/app/cache`，不在 `/app/data` 下。不单独挂载时，缓存会留在容器里，重建容器后清空。缓存默认上限 5 GB，可在 <span class="ui-path">系统 › 系统设置</span> 的「缓存」里调整或清理。
+:::
 
-Source 的新增、停用以及监听地址或端口变更支持热更新，但操作系统防火墙、云安全组和 Docker 端口映射不会自动变化。
+### 二进制
 
-## 配置优先级
+在 [下载页](https://github.com/SingleJohn/emby-gateway-bin/releases) 选择对应系统的文件：
 
-- 命令行参数高于环境变量默认值和数据库配置。
-- `-db-dsn` 非空时覆盖 `-db`。
-- `-db-driver` 为空时，有 DSN 推断为 `postgres`，否则使用 `sqlite`。
-- `-admin-host` 仅在非空时覆盖数据库配置。
-- `-admin-port` 和许可证秒数参数仅在大于 `0` 时覆盖数据库配置。
-- `-config` 仅为兼容保留，当前版本不会从该文件加载配置。
-
-## 命令行参数
-
-| 参数 | 启动默认值 | 说明 |
-|---|---|---|
-| `-config` | `config.yaml` | 已废弃并忽略 |
-| `-db` | `data/gateway.db` | SQLite 路径或兼容 DSN |
-| `-db-driver` | 自动推断 | `sqlite` 或 `postgres` |
-| `-db-dsn` | 空 | 数据库 DSN，优先于 `-db` |
-| `-db-allow-destructive` | `false` | 允许破坏性数据库迁移；只在明确理解影响时开启 |
-| `-admin-host` | 空 | 非空时覆盖数据库中的监听地址 |
-| `-admin-port` | `0` | 大于 `0` 时覆盖数据库中的端口 |
-| `-license-server-url` | 空 | 许可证服务地址 |
-| `-license-token` | 空 | 许可证 Bearer Token |
-| `-license-public-key` | 空 | Base64 或 `ssh-ed25519` 公钥 |
-| `-license-dir` | 空 | 最终默认 `data/license` |
-| `-license-renew-seconds` | `0` | 续期周期覆盖值 |
-| `-license-rollback-tolerance-seconds` | `0` | 时间回拨容忍覆盖值 |
-| `-license-activate-timeout-seconds` | `0` | 激活请求超时覆盖值 |
-
-## 环境变量
-
-| 环境变量 | 说明 |
+| 系统 | 文件名 |
 |---|---|
-| `GATEWAY_DB_DRIVER` | `sqlite` 或 `postgres` |
-| `GATEWAY_DB_DSN` | PostgreSQL DSN |
-| `DATABASE_URL` | 仅在 `GATEWAY_DB_DSN` 为空时作为 DSN 兜底 |
-| `GATEWAY_DB_ALLOW_DESTRUCTIVE_MIGRATIONS` | `1` 或 `true` 开启破坏性迁移 |
-| `GATEWAY_ADMIN_HOST` | 管理端监听地址覆盖值 |
-| `GATEWAY_ADMIN_PORT` | 管理端端口覆盖值 |
-| `GATEWAY_LICENSE_SERVER_URL` | 许可证服务地址 |
-| `GATEWAY_LICENSE_SERVER_TOKEN` | 首选许可证 Token |
-| `GATEWAY_LICENSE_TOKEN` | 前一变量为空时的 Token 兜底 |
-| `GATEWAY_LICENSE_PUBLIC_KEY` | 许可证公钥 |
-| `GATEWAY_LICENSE_DIR` | 许可证本地目录 |
-| `GATEWAY_LICENSE_RENEW_SECONDS` | 续期周期 |
-| `GATEWAY_LICENSE_ROLLBACK_TOLERANCE_SECONDS` | 时间回拨容忍 |
-| `GATEWAY_LICENSE_ACTIVATE_TIMEOUT_SECONDS` | 激活请求超时 |
-| `GATEWAY_CFG_ENC_KEY` | 配置敏感字段加密密钥；已加密数据库启动时必须提供同一密钥 |
+| Linux | `emby-s3-gateway-linux-amd64`、`emby-s3-gateway-linux-arm64` |
+| Windows | `emby-s3-gateway-windows-amd64.exe`、`emby-s3-gateway-windows-arm64.exe` |
+| macOS | `emby-s3-gateway-darwin-amd64`、`emby-s3-gateway-darwin-arm64` |
+
+```bash
+chmod +x emby-s3-gateway-linux-amd64
+GATEWAY_ADMIN_PORT=19999 ./emby-s3-gateway-linux-amd64
+```
+
+程序会在**当前目录**下创建 `data/`（数据库与授权）和 `cache/`（缓存），所以请在固定的目录里启动。长期运行建议用 systemd 托管。
+
+下载页里除了正式版本，还有随开发进度更新的 `nightly` 预发布版本，适合想提前验证修复的用户。生产环境请用正式版本。
+
+## 数据库
+
+| | SQLite | PostgreSQL |
+|---|---|---|
+| 适合 | 体验、个人使用、请求量不大 | 长期运行、多用户、需要长期保留请求日志 |
+| 部署 | 不需要额外服务 | 需要单独运行数据库 |
+| 配置 | 什么都不用设置 | 设置 `GATEWAY_DB_DRIVER=postgres` 和 `GATEWAY_DB_DSN` |
+
+设置了 `GATEWAY_DB_DSN` 时，网关会自动使用 PostgreSQL；否则使用 `data/gateway.db`。
+
+请求日志会持续增长，请在 <span class="ui-path">系统 › 系统设置</span> 里设置合适的保留天数，并定期查看 [数据库维护](/ops/database-maintenance)。
+
+## 反向代理与 HTTPS
+
+### Emby 源
+
+给播放器提供 HTTPS 时，用 Nginx、Caddy 等把域名转发到 Emby 源端口。注意：
+
+- 开启 WebSocket 转发，Emby 客户端需要它推送状态。
+- 把真实客户端 IP 通过 `X-Forwarded-For` 或 `X-Real-IP` 传给网关，并在 <span class="ui-path">安全 › 防护策略</span> 的「真实 IP」里把反向代理的地址加入「可信代理白名单 (CIDR)」。否则网关看到的所有请求都来自反向代理，登录防护和封禁会误伤所有人。
+- 不要在反向代理上缓存视频请求。
+
+### 管理界面
+
+管理界面最好只在内网、VPN 或受 IP 限制的反向代理后访问。需要放在公网域名下时：
+
+- 在 <span class="ui-path">系统 › 系统设置</span> 里设置「控制台路径前缀」（例如 `asdfg`），管理界面的地址会变成 `http://服务器地址:管理端口/asdfg/`，其他路径一律返回 404。
+- 配合反向代理的访问控制（IP 白名单或额外认证）一起使用。
 
 ## Local Agent
 
-| 环境变量 | 说明 |
-|---|---|
-| `LOCAL_AGENT_HOST` | 监听地址，默认 `0.0.0.0` |
-| `LOCAL_AGENT_PORT` | 监听端口，必填 |
-| `LOCAL_AGENT_SYNC_TOKEN` | 网关同步鉴权 Token，必填 |
-| `LOCAL_AGENT_CORS_ALLOW_ORIGINS` | 允许的浏览器来源，逗号分隔 |
+媒体存放在另一台机器的本地磁盘上时，可以在那台机器上运行 Local Agent：它负责列出目录，并给播放器提供带签名的直链。网关里对应的后端类型是「Local Agent」。
 
-网关的 `local_agent` 后端还需要配置客户端可访问的 `public_base_url`、网关可访问的 `agent_api_url`、`base_dir`、签名密钥和相同的同步 Token。
+部署方法和变量见 [本地目录与 Local Agent](/guide/backend-local) 与 [启动参数与环境变量](/reference/cli-env#local-agent)。
 
-## 数据与升级
+## 升级与回滚
 
-- 持久化 `gateway-data`、`gateway-cache` 和 PostgreSQL 数据目录。
-- 升级前备份 PostgreSQL，并记录当前正式版本号。
-- 不要在未知数据库结构上随意开启破坏性迁移。
-- 正式版本使用版本号或 `latest`；`nightly` 是滚动预发布，可能包含尚未形成正式版本的变更。
-- 升级后检查控制台版本、Source 监听、许可证状态、数据库维护页和一次真实播放链路。
+### 升级前
+
+1. 记下当前版本：管理界面顶栏右侧显示当前版本号，点开可以检查更新。
+2. 备份数据库：
+   - SQLite：停止网关后复制 `gateway-data/gateway.db`；
+   - PostgreSQL：`docker exec pg-emby-gateway pg_dump -U gatewayuser gateway > gateway-backup.sql`。
+3. 一并备份 `gateway-data/license` 目录。
+
+### 升级
+
+Docker：
+
+```bash
+docker compose pull emby-gateway
+docker compose up -d emby-gateway
+```
+
+二进制：停止进程，替换文件，用同样的参数重新启动。
+
+网关启动时会自动升级数据库结构，不需要手动执行脚本。
+
+### 升级后检查
+
+- 顶栏版本号已经变化；
+- <span class="ui-path">首页 › 控制台</span> 的「需要关注」里没有新出现的授权或配置异常；
+- 每个 Emby 源都能连上，播放一个媒体后能在流量分析的「302 链路」里看到记录。
+
+### 回滚
+
+数据库结构升级后不一定能被旧版本识别。回滚时换回旧版本程序，**同时**恢复升级前的数据库备份。
 
 ## 安全基线
 
-1. 设置管理员密码；需要只读协作时另设观察员密码。
-2. 管理端通过反向代理、VPN 或 IP 策略限制访问。
-3. 数据库只允许受信网络访问，并使用独立强密码。
-4. 定期轮换 Emby API Key、网盘凭据、Worker/Agent Token 和签名密钥。
-5. 不要把带真实凭据的配置、日志或截图发布到公开问题单。
+1. **设置管理密码**。没有设置「Admin Password」时，管理界面不需要登录。
+2. **按需设置只读账号**。给协作者「Viewer Password」而不是管理密码，只读账号看到的密钥、Token 会被隐藏，见 [管理界面基础](/guide/management-ui#登录与角色)。
+3. **管理端口不暴露到公网**。示例里可以把端口映射写成 `127.0.0.1:19999:19999`，再通过 SSH 隧道、VPN 或受限的反向代理访问。
+4. **数据库只在本机或内网可访问**，使用独立的强密码。
+5. **配置加密密钥**。配置里的密钥类字段在数据库中加密保存。如需使用自己的加密密钥，在第一次启动前设置 `GATEWAY_CFG_ENC_KEY`，之后不要更换，见 [启动参数与环境变量](/reference/cli-env)。
+6. **定期更换凭据**：Emby API Key、网盘授权、Worker 和 Local Agent 的 Token、签名密钥。
+7. 反馈问题时，不要公开带真实凭据的配置、日志或截图。
