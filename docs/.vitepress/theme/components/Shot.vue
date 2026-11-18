@@ -42,11 +42,11 @@ const dark = withBase(`/shots/${props.name}.dark.webp`)
   display: none;
 }
 
-:global(.dark) .shot-light {
+html.dark .shot-light {
   display: none;
 }
 
-:global(.dark) .shot-dark {
+html.dark .shot-dark {
   display: block;
 }
 

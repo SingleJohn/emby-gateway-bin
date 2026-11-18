@@ -37,14 +37,16 @@
   line-height: 1.8;
 }
 
+/* 表格宽于正文时横向滚动，不撑破页面（手机上尤其重要） */
 .vp-doc table {
-  display: table;
-  width: 100%;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid var(--eg-border);
   border-radius: var(--eg-radius-inner);
-  overflow: hidden;
 }
 
 .vp-doc th,
@@ -64,10 +66,6 @@
 .vp-doc th {
   background: var(--eg-surface-2);
   font-size: 13px;
-  white-space: nowrap;
-}
-
-.vp-doc td code {
   white-space: nowrap;
 }
 

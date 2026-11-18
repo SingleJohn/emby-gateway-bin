@@ -245,10 +245,10 @@ const compose = `services:
 .t-teal { color: #0d9488; }
 .t-rose { color: #e11d48; }
 .t-sky { color: #0284c7; }
-:global(.dark) .t-violet { color: #c4b5fd; }
-:global(.dark) .t-teal { color: #5eead4; }
-:global(.dark) .t-rose { color: #fda4af; }
-:global(.dark) .t-sky { color: #7dd3fc; }
+html.dark .t-violet { color: #c4b5fd; }
+html.dark .t-teal { color: #5eead4; }
+html.dark .t-rose { color: #fda4af; }
+html.dark .t-sky { color: #7dd3fc; }
 
 h1,
 h2 {
@@ -282,7 +282,7 @@ h2 {
   color: transparent;
 }
 
-:global(.dark) .grad {
+html.dark .grad {
   background-image: linear-gradient(120deg, #60a5fa 10%, #38bdf8 60%, #a78bfa 100%);
 }
 
@@ -481,11 +481,11 @@ h2 {
   display: none;
 }
 
-:global(.dark) .cap-shot .light {
+html.dark .cap-shot .light {
   display: none;
 }
 
-:global(.dark) .cap-shot .dark {
+html.dark .cap-shot .dark {
   display: block;
 }
 
